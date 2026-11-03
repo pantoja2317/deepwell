@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DeepWell Rentals | Operations Command Center</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-glow: #60a5fa;
+            --accent: #06b6d4;
+            --gold: #f59e0b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --bg-dark: #070b14;
+            --card-bg: rgba(15, 23, 42, 0.90);
+            --border: rgba(59, 130, 246, 0.25);
+            --border-glow: rgba(59, 130, 246, 0.5);
+        }
+
+        * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.15) 0%, transparent 70%),
+                radial-gradient(circle at 0% 100%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
+            color: #f1f5f9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+            opacity: 0.2;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .navbar {
+            background: rgba(11, 19, 41, 0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-logo i { color: var(--primary); font-size: 1.5rem; }
+        .brand-accent { color: var(--accent); }
+
+        .user-nav-profile {
+            display: none;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-family: 'Orbitron';
+            border: 2px solid var(--border-glow);
+            font-size: 0.9rem;
+        }
+
+        .user-meta { text-align: right; }
+        .user-meta .u-name { font-weight: 700; font-size: 0.95rem; color: #fff; }
+        .user-meta .u-role { font-size: 0.7rem; color: var(--gold); font-family: 'Orbitron'; text-transform: uppercase; }
+
+        .btn-logout {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: var(--danger);
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Orbitron';
+            font-size: 0.7rem;
+            transition: all 0.3s;
+        }
+
+        .btn-logout:hover { background: var(--danger); color: white; }
+
+        .login-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 35px 25px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 30px rgba(37, 99, 235, 0.2);
+            text-align: center;
+        }
+
+        .login-card h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        .login-card p {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+            position: relative;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-family: 'Orbitron';
+            color: #94a3b8;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            bottom: 15px;
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 13px 13px 13px 44px;
+            border-radius: 12px;
+            color: white;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary-glow);
+            background: rgba(37, 99, 235, 0.08);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-glow {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), #1d4ed8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-glow:hover {
+            background: linear-gradient(135deg, #3d76f6, var(--primary));
+            box-shadow: 0 10px 35px rgba(37, 99, 235, 0.6);
+        }
+
+        .dashboard-container {
+            display: none;
+            flex: 1;
+            padding: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--gold);
+        }
+
+        .metric-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.4rem;
+            color: var(--gold);
+        }
+
+        .metric-data h3 {
+            font-family: 'Orbitron';
+            font-size: 1.6rem;
+            font-weight: 800;
+        }
+
+        .metric-data p {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .dash-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .dash-title {
+            font-family: 'Orbitron';
+            font-size: 1.1rem;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-box {
+            position: relative;
+            min-width: 280px;
+        }
+
+        .search-box input {
+            padding-left: 40px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+        }
+
+        .table-responsive {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            overflow-x: auto;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: rgba(30, 41, 59, 0.8);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 1.5px;
+            color: #94a3b8;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #cbd5e1;
+        }
+
+        tr { cursor: pointer; }
+        tr:hover { background: rgba(59, 130, 246, 0.08); }
+
+        .badge-status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-family: 'Orbitron';
+            font-size: 0.65rem;
+            font-weight: bold;
+            display: inline-block;
+            background: rgba(245, 158, 11, 0.15); 
+            color: var(--gold); 
+            border: 1px solid rgba(245, 158, 11, 0.4);
+        }
+
+        .btn-action-sm {
+            padding: 6px 12px;
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid var(--border);
+            color: var(--primary-glow);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .btn-action-sm:hover { background: var(--primary); color: white; }
+
+        /* MODAL */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(3, 7, 18, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: #0f172a;
+            border: 1px solid var(--border-glow);
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
+            max-width: 550px;
+            box-shadow: 0 0 50px rgba(59, 130, 246, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+        }
+
+        .modal-header h3 { font-family: 'Orbitron'; font-size: 1.1rem; color: var(--primary-glow); }
+        .modal-close { background: none; border: none; color: #94a3b8; font-size: 1.4rem; cursor: pointer; }
+        .modal-close:hover { color: white; }
+
+        .map-link {
+            color: var(--accent);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: bold;
+            margin-top: 4px;
+        }
+        .map-link:hover { text-decoration: underline; color: #38bdf8; }
+
+        @media (max-width: 768px) {
+            .navbar { padding: 15px; }
+            .dash-actions { flex-direction: column; align-items: stretch; }
+            .search-box { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="brand-logo">
+            <i class="fas fa-cubes"></i>
+            DEEPWELL <span class="brand-accent">RENTALS</span>
+        </div>
+        <div class="user-nav-profile" id="navProfile">
+            <div class="user-avatar" id="avatarText">JP</div>
+            <div class="user-meta">
+                <div class="u-name" id="userNameDisplay">Jorge Pantoja</div>
+                <div class="u-role" id="userRoleDisplay">Tech</div>
+            </div>
+            <button class="btn-logout" onclick="logout()"><i class="fas fa-power-off"></i> LOGOUT</button>
+        </div>
+    </nav>
+
+    <div class="login-wrapper" id="loginWrapper">
+        <div class="login-card">
+            <div style="font-size: 2.2rem; color: var(--primary); margin-bottom: 10px;">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h2>SYSTEM ACCESS</h2>
+            <p>DeepWell Operations Portal</p>
+
+            <form id="loginForm">
+                <div class="input-group">
+                    <label>USER / USERNAME</label>
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="loginUser" placeholder="e.g. Pantoja" required>
+                </div>
+
+                <div class="input-group">
+                    <label>PASSWORD</label>
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="loginPass" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn-glow">AUTHENTICATE</button>
+            </form>
+            <div id="loginAlert" style="color: var(--danger); font-size: 0.85rem; margin-top: 15px; display: none;">
+                Invalid credentials, inactive account, or user not found.
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-container" id="dashboardView">
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-icon"><i class="fas fa-folder-open"></i></div>
+                <div class="metric-data">
+                    <h3 id="countOpen">0</h3>
+                    <p id="metricLabel">Open Work Orders</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="dash-actions">
+            <div class="dash-title">
+                <i class="fas fa-clipboard-list" style="color: var(--primary-glow);"></i> <span id="tableHeaderTitle">OPEN WORK ORDERS</span>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" onkeyup="filterOrders()" placeholder="Search order ID, client...">
+                </div>
+                <button class="btn-action-sm" onclick="loadDashboardData()"><i class="fas fa-sync-alt"></i> Refresh</button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Status</th>
+                        <th>Customer / Location</th>
+                        <th>Phone</th>
+                        <th>Service Category</th>
+                        <th>Assigned Tech</th>
+                        <th>Date Opened</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="ordersTableBody">
+                    <tr>
+                        <td colspan="8" style="text-align: center; color: #64748b; padding: 40px;">
+                            <i class="fas fa-spinner fa-spin" style="font-size: 1.5rem; margin-bottom: 10px;"></i><br>
+                            Loading Open Work Orders from Google Sheet...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- GENERAL DETAILS & ASSIGNMENT MODAL -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="mOrderTitle">WORK ORDER DETAILS</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modalBodyContent" style="font-size: 0.95rem; line-height: 1.6; color: #cbd5e1;">
+                <!-- Dynamic Content -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwNhCO6bTDSgT4zdNggYAKPva2zykR0Vn4F6ciZPb1C1nb2YO5dxaJYGI6bPq-lmeJW/exec';
+
+        let currentUser = null;
+        let activeOrdersData = [];
+        let activeUsersList = [];
+        let selectedOrderId = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedUser = localStorage.getItem('deepwell_session');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                showDashboard();
+            }
+        });
+
+        // VALIDAR LOGIN CONTRA LA TABLA USERS DE GOOGLE SHEETS
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const userInput = document.getElementById('loginUser').value.trim();
+            const passInput = document.getElementById('loginPass').value.trim();
+
+            const alertBox = document.getElementById('loginAlert');
+            alertBox.style.display = 'block';
+            alertBox.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Validating credentials in Google Sheet...';
+
+            fetch(`${SCRIPT_URL}?action=getUsers`)
+                .then(res => res.json())
+                .then(users => {
+                    const found = users.find(u => 
+                        u.user.toLowerCase() === userInput.toLowerCase() && 
+                        u.password === passInput &&
+                        u.status.toLowerCase() === "active"
+                    );
+
+                    if (found) {
+                        currentUser = found;
+                        localStorage.setItem('deepwell_session', JSON.stringify(found));
+                        alertBox.style.display = 'none';
+                        showDashboard();
+                    } else {
+                        alertBox.style.display = 'block';
+                        alertBox.innerHTML = "Invalid credentials, inactive account, or user not found.";
+                    }
+                })
+                .catch(err => {
+                    console.error("Login error:", err);
+                    alertBox.style.display = 'block';
+                    alertBox.innerHTML = "Connection error validating users.";
+                });
+        });
+
+        function showDashboard() {
+            document.getElementById('loginWrapper').style.display = 'none';
+            document.getElementById('dashboardView').style.display = 'block';
+            document.getElementById('navProfile').style.display = 'flex';
+
+            document.getElementById('userNameDisplay').innerText = currentUser.name;
+            document.getElementById('userRoleDisplay').innerText = currentUser.rol + " / " + currentUser.department;
+            document.getElementById('avatarText').innerText = currentUser.name.split(' ').map(n => n[0]).join('');
+
+            if (currentUser.rol.toLowerCase() === 'tech') {
+                document.getElementById('tableHeaderTitle').innerText = "MY ASSIGNED WORK ORDERS";
+                document.getElementById('metricLabel').innerText = "My Open Orders";
+            } else {
+                document.getElementById('tableHeaderTitle').innerText = "ALL OPEN WORK ORDERS (DISPATCH COMMAND)";
+                document.getElementById('metricLabel').innerText = "Total Open Orders";
+            }
+
+            loadDashboardData();
+        }
+
+        function logout() {
+            localStorage.removeItem('deepwell_session');
+            currentUser = null;
+            document.getElementById('dashboardView').style.display = 'none';
+            document.getElementById('navProfile').style.display = 'none';
+            document.getElementById('loginWrapper').style.display = 'flex';
+        }
+
+        function loadDashboardData() {
+            // Cargar Órdenes y también la lista de técnicos disponibles para asignar
+            fetch(`${SCRIPT_URL}?action=getOrders`)
+                .then(res => res.json())
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        activeOrdersData = data;
+                        renderTable();
+                    }
+                });
+
+            fetch(`${SCRIPT_URL}?action=getUsers`)
+                .then(res => res.json())
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        activeUsersList = data.filter(u => u.status.toLowerCase() === 'active' && u.rol.toLowerCase() === 'tech');
+                    }
+                });
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('ordersTableBody');
+            tbody.innerHTML = '';
+
+            let filteredOrders = activeOrdersData.filter(o => String(o.status).trim().toLowerCase() === "open");
+
+            if (currentUser.rol.toLowerCase() === 'tech') {
+                filteredOrders = filteredOrders.filter(o => String(o.assigned).trim().toLowerCase() === String(currentUser.name).trim().toLowerCase());
+            }
+
+            // Ordenar del más reciente al más viejo según DateService (dateRaw)
+            filteredOrders.sort((a, b) => new Date(b.dateRaw) - new Date(a.dateRaw));
+
+            if (filteredOrders.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:#64748b;">No open work orders found.</td></tr>`;
+                document.getElementById('countOpen').innerText = 0;
+                return;
+            }
+
+            document.getElementById('countOpen').innerText = filteredOrders.length;
+
+            filteredOrders.forEach(item => {
+                const tr = document.createElement('tr');
+                // Al hacer clic en la fila se abren los detalles
+                tr.onclick = (e) => {
+                    if(e.target.tagName !== 'BUTTON') openDetailModal(item.id);
+                };
+                
+                let actionBtn = `<button class="btn-action-sm" onclick="openDetailModal('${item.id}')"><i class="fas fa-eye"></i> View</button>`;
+                if (currentUser.rol.toLowerCase() === 'boss' || currentUser.rol.toLowerCase() === 'dispatch') {
+                    actionBtn = `<button class="btn-action-sm" onclick="openAssignModal(event, '${item.id}')"><i class="fas fa-user-tag"></i> Assign</button>`;
+                }
+
+                tr.innerHTML = `
+                    <td style="font-family:'Orbitron'; font-weight:bold; color:var(--primary-glow);">${item.id}</td>
+                    <td><span class="badge-status">${item.status}</span></td>
+                    <td><strong>${item.customer}</strong><br><small style="color:#64748b;">${item.address}</small></td>
+                    <td>${item.phone}</td>
+                    <td>${item.service}</td>
+                    <td><i class="fas fa-user-gear" style="color:var(--gold);"></i> ${item.assigned}</td>
+                    <td>${item.date}</td>
+                    <td>${actionBtn}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filterOrders() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            const rows = document.getElementById('ordersTableBody').getElementsByTagName('tr');
+            for (let r of rows) {
+                r.style.display = r.innerText.toLowerCase().includes(q) ? '' : 'none';
+            }
+        }
+
+        // ABRIR MODAL CON DETALLES Y MAPA INTERACTIVO
+        function openDetailModal(id) {
+            selectedOrderId = id;
+            const order = activeOrdersData.find(o => o.id === id);
+            if (!order) return;
+
+            const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(order.address)}`;
+
+            document.getElementById('mOrderTitle').innerText = `WORK ORDER SUMMARY [${order.id}]`;
+            document.getElementById('modalBodyContent').innerHTML = `
+                <p><strong>Customer:</strong> ${order.customer}</p>
+                <p><strong>Phone:</strong> <a href="tel:${order.phone}" style="color:var(--primary-glow); text-decoration:none;">${order.phone || 'N/A'}</a></p>
+                <p><strong>Location / Address:</strong><br>
+                   <a href="${mapsUrl}" target="_blank" class="map-link">
+                       <i class="fas fa-map-marker-alt"></i> ${order.address || 'No address specified'} (Open in Google Maps)
+                   </a>
+                </p>
+                <p style="margin-top:10px;"><strong>Service Required:</strong> ${order.service}</p>
+                <p><strong>Assigned Technician:</strong> ${order.assigned}</p>
+                <p><strong>Date Opened:</strong> ${order.date}</p>
+                <hr style="border-color:var(--border); margin: 15px 0;">
+                <p><strong>Notes / Description:</strong></p>
+                <p style="background:rgba(255,255,255,0.03); padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); margin-top:5px;">${order.notes || 'No description notes provided.'}</p>
+            `;
+            document.getElementById('detailModal').style.display = 'flex';
+        }
+
+        // ABRIR MODAL DE ASIGNACIÓN (Boss / Dispatch)
+        function openAssignModal(e, id) {
+            e.stopPropagation();
+            selectedOrderId = id;
+            const order = activeOrdersData.find(o => o.id === id);
+
+            let optionsHtml = activeUsersList.map(u => `<option value="${u.name}">${u.name} (${u.department})</option>`).join('');
+            if(optionsHtml === '') optionsHtml = `<option value="Jorge Pantoja">Jorge Pantoja</option>`;
+
+            document.getElementById('mOrderTitle').innerText = `ASSIGN TECHNICIAN [${id}]`;
+            document.getElementById('modalBodyContent').innerHTML = `
+                <p style="margin-bottom: 15px; color: #94a3b8;">Client: <strong>${order.customer}</strong> | Service: ${order.service}</p>
+                <div class="input-group">
+                    <label>SELECT ACTIVE TECHNICIAN</label>
+                    <select id="techSelect">
+                        ${optionsHtml}
+                    </select>
+                </div>
+                <button class="btn-glow" onclick="saveAssignment()">CONFIRM & ASSIGN</button>
+            `;
+            document.getElementById('detailModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').style.display = 'none';
+        }
+
+        function saveAssignment() {
+            const newTech = document.getElementById('techSelect').value;
+            const order = activeOrdersData.find(o => o.id === selectedOrderId);
+            
+            if (order) {
+                const assignDate = new Date().toLocaleString();
+                order.assigned = newTech;
+
+                const assignParams = new URLSearchParams({
+                    action: "assignTech",
+                    orderId: selectedOrderId,
+                    techName: newTech,
+                    dateAsigned: assignDate
+                });
+
+                fetch(`${SCRIPT_URL}?${assignParams.toString()}`, {
+                    method: "GET",
+                    mode: "no-cors"
+                })
+                .then(() => {
+                    alert(`Order ${selectedOrderId} assigned to ${newTech}! Columns G & N updated in Google Sheets.`);
+                    closeModal();
+                    loadDashboardData();
+                })
+                .catch(err => {
+                    console.error("Error updating assignment:", err);
+                    alert("Assignment saved locally.");
+                    closeModal();
+                    renderTable();
+                });
+            }
+        }
+    </script>
+</body>
+</html>
