@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DeepWell Rentals | Operations Command Center</title>
+    <title>DeepWell Rentals | Operations App</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,7 +17,7 @@
             --success: #10b981;
             --danger: #ef4444;
             --bg-dark: #070b14;
-            --card-bg: rgba(15, 23, 42, 0.90);
+            --card-bg: rgba(15, 23, 42, 0.95);
             --border: rgba(59, 130, 246, 0.25);
             --border-glow: rgba(59, 130, 246, 0.5);
         }
@@ -46,11 +46,12 @@
             pointer-events: none;
         }
 
+        /* --- NAVBAR --- */
         .navbar {
-            background: rgba(11, 19, 41, 0.95);
+            background: rgba(11, 19, 41, 0.98);
             backdrop-filter: blur(15px);
             border-bottom: 1px solid var(--border);
-            padding: 15px 30px;
+            padding: 12px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -61,27 +62,27 @@
 
         .brand-logo {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-weight: 900;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             color: #ffffff;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .brand-logo i { color: var(--primary); font-size: 1.5rem; }
+        .brand-logo i { color: var(--primary); font-size: 1.3rem; }
         .brand-accent { color: var(--accent); }
 
         .user-nav-profile {
             display: none;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
         }
 
         .user-avatar {
-            width: 38px;
-            height: 38px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--primary), var(--accent));
             display: flex;
@@ -90,106 +91,103 @@
             font-weight: bold;
             font-family: 'Orbitron';
             border: 2px solid var(--border-glow);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
 
         .user-meta { text-align: right; }
-        .user-meta .u-name { font-weight: 700; font-size: 0.95rem; color: #fff; }
-        .user-meta .u-role { font-size: 0.7rem; color: var(--gold); font-family: 'Orbitron'; text-transform: uppercase; }
+        .user-meta .u-name { font-weight: 700; font-size: 0.85rem; color: #fff; line-height: 1.1; }
+        .user-meta .u-role { font-size: 0.65rem; color: var(--gold); font-family: 'Orbitron'; text-transform: uppercase; }
 
         .btn-logout {
             background: rgba(239, 68, 68, 0.15);
             border: 1px solid rgba(239, 68, 68, 0.4);
             color: var(--danger);
-            padding: 8px 14px;
-            border-radius: 8px;
+            padding: 6px 10px;
+            border-radius: 6px;
             cursor: pointer;
             font-family: 'Orbitron';
-            font-size: 0.7rem;
-            transition: all 0.3s;
+            font-size: 0.65rem;
         }
 
-        .btn-logout:hover { background: var(--danger); color: white; }
-
+        /* --- LOGIN SCREEN --- */
         .login-wrapper {
             flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 16px;
         }
 
         .login-card {
             width: 100%;
-            max-width: 400px;
+            max-width: 380px;
             background: var(--card-bg);
             backdrop-filter: blur(20px);
             border: 1px solid var(--border);
             border-radius: 20px;
-            padding: 35px 25px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 30px rgba(37, 99, 235, 0.2);
+            padding: 30px 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
             text-align: center;
         }
 
         .login-card h2 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.3rem;
-            letter-spacing: 2px;
+            font-size: 1.2rem;
+            letter-spacing: 1.5px;
             margin-bottom: 5px;
             color: #fff;
         }
 
         .login-card p {
             color: #94a3b8;
-            font-size: 0.85rem;
-            margin-bottom: 25px;
+            font-size: 0.8rem;
+            margin-bottom: 20px;
         }
 
         .input-group {
-            margin-bottom: 18px;
+            margin-bottom: 15px;
             position: relative;
             text-align: left;
         }
 
         .input-group label {
             display: block;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-family: 'Orbitron';
             color: #94a3b8;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             letter-spacing: 1px;
         }
 
         .input-group i {
             position: absolute;
-            left: 15px;
-            bottom: 15px;
+            left: 14px;
+            bottom: 14px;
             color: var(--primary);
-            font-size: 1rem;
+            font-size: 0.95rem;
         }
 
         input, select, textarea {
             width: 100%;
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.12);
-            padding: 13px 13px 13px 44px;
+            padding: 12px 12px 12px 42px;
             border-radius: 12px;
             color: white;
             font-family: 'Rajdhani', sans-serif;
             font-size: 1rem;
             outline: none;
-            transition: all 0.3s ease;
         }
 
         input:focus, select:focus, textarea:focus {
             border-color: var(--primary-glow);
             background: rgba(37, 99, 235, 0.08);
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
         }
 
         .btn-glow {
             width: 100%;
-            padding: 16px;
+            padding: 14px;
             background: linear-gradient(135deg, var(--primary), #1d4ed8);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 12px;
@@ -198,42 +196,34 @@
             font-size: 0.85rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
             cursor: pointer;
             box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
-            transition: all 0.3s ease;
             margin-top: 10px;
         }
 
-        .btn-glow:hover {
-            background: linear-gradient(135deg, #3d76f6, var(--primary));
-            box-shadow: 0 10px 35px rgba(37, 99, 235, 0.6);
-        }
-
+        /* --- DASHBOARD VIEW --- */
         .dashboard-container {
             display: none;
             flex: 1;
-            padding: 30px;
-            max-width: 1400px;
+            padding: 16px;
+            max-width: 1200px;
             margin: 0 auto;
             width: 100%;
         }
 
         .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .metric-card {
             background: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 20px;
+            border-radius: 14px;
+            padding: 16px;
             display: flex;
             align-items: center;
-            gap: 18px;
+            gap: 15px;
             position: relative;
             overflow: hidden;
         }
@@ -246,55 +236,43 @@
         }
 
         .metric-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
             background: rgba(255, 255, 255, 0.05);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             color: var(--gold);
         }
 
-        .metric-data h3 {
-            font-family: 'Orbitron';
-            font-size: 1.6rem;
-            font-weight: 800;
-        }
-
-        .metric-data p {
-            font-size: 0.8rem;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+        .metric-data h3 { font-family: 'Orbitron'; font-size: 1.4rem; font-weight: 800; }
+        .metric-data p { font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
 
         .dash-actions {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 12px;
             margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 15px;
         }
 
         .dash-title {
             font-family: 'Orbitron';
-            font-size: 1.1rem;
-            letter-spacing: 1.5px;
+            font-size: 1rem;
+            letter-spacing: 1px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .search-box {
             position: relative;
-            min-width: 280px;
+            width: 100%;
         }
 
         .search-box input {
-            padding-left: 40px;
+            padding-left: 38px;
             padding-top: 10px;
             padding-bottom: 10px;
             font-size: 0.95rem;
@@ -308,101 +286,135 @@
             color: #64748b;
         }
 
-        .table-responsive {
+        /* --- APP-LIKE CARDS VIEW (Móvil perfecto) --- */
+        .orders-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .order-card-mobile {
             background: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 18px;
-            overflow-x: auto;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            border-radius: 14px;
+            padding: 16px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            font-size: 0.95rem;
+        .order-card-mobile:active { transform: scale(0.98); }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
         }
 
-        th {
-            background: rgba(30, 41, 59, 0.8);
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.75rem;
-            letter-spacing: 1.5px;
-            color: #94a3b8;
-            padding: 16px 20px;
-            border-bottom: 1px solid var(--border);
-            text-transform: uppercase;
+        .card-id {
+            font-family: 'Orbitron';
+            font-weight: bold;
+            font-size: 1rem;
+            color: var(--primary-glow);
         }
-
-        td {
-            padding: 16px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            color: #cbd5e1;
-        }
-
-        tr { cursor: pointer; }
-        tr:hover { background: rgba(59, 130, 246, 0.08); }
 
         .badge-status {
-            padding: 5px 10px;
-            border-radius: 20px;
+            padding: 4px 8px;
+            border-radius: 12px;
             font-family: 'Orbitron';
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             font-weight: bold;
-            display: inline-block;
             background: rgba(245, 158, 11, 0.15); 
             color: var(--gold); 
             border: 1px solid rgba(245, 158, 11, 0.4);
         }
 
+        .card-body p {
+            font-size: 0.95rem;
+            color: #e2e8f0;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .card-body p i { color: var(--primary); margin-top: 3px; min-width: 16px; }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
         .btn-action-sm {
-            padding: 6px 12px;
-            background: rgba(59, 130, 246, 0.15);
+            padding: 8px 14px;
+            background: rgba(59, 130, 246, 0.2);
             border: 1px solid var(--border);
             color: var(--primary-glow);
             border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            transition: all 0.2s;
+            font-family: 'Orbitron';
+            font-size: 0.75rem;
+            font-weight: bold;
         }
 
-        .btn-action-sm:hover { background: var(--primary); color: white; }
+        /* --- MESA PARA PC (Se oculta en celular y se usa en pantallas grandes) --- */
+        .table-desktop-wrapper { display: none; }
+
+        @media(min-width: 900px) {
+            .orders-list { display: none; }
+            .table-desktop-wrapper { display: block; background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; overflow-x: auto; }
+            table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem; }
+            th { background: rgba(30, 41, 59, 0.8); font-family: 'Orbitron'; font-size: 0.7rem; color: #94a3b8; padding: 14px 18px; }
+            td { padding: 14px 18px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: #cbd5e1; }
+            tr { cursor: pointer; }
+            tr:hover { background: rgba(59, 130, 246, 0.06); }
+            .dash-actions { flex-direction: row; justify-content: space-between; align-items: center; }
+            .search-box { width: 300px; }
+        }
 
         /* MODAL */
         .modal-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(3, 7, 18, 0.85);
+            background: rgba(3, 7, 18, 0.88);
             backdrop-filter: blur(10px);
             z-index: 200;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 16px;
         }
 
         .modal-box {
             background: #0f172a;
             border: 1px solid var(--border-glow);
             border-radius: 20px;
-            padding: 30px;
+            padding: 24px;
             width: 100%;
-            max-width: 550px;
-            box-shadow: 0 0 50px rgba(59, 130, 246, 0.3);
+            max-width: 500px;
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.3);
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border-bottom: 1px solid var(--border);
-            padding-bottom: 12px;
+            padding-bottom: 10px;
         }
 
-        .modal-header h3 { font-family: 'Orbitron'; font-size: 1.1rem; color: var(--primary-glow); }
-        .modal-close { background: none; border: none; color: #94a3b8; font-size: 1.4rem; cursor: pointer; }
-        .modal-close:hover { color: white; }
+        .modal-header h3 { font-family: 'Orbitron'; font-size: 1rem; color: var(--primary-glow); }
+        .modal-close { background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer; }
 
         .map-link {
             color: var(--accent);
@@ -411,14 +423,7 @@
             align-items: center;
             gap: 6px;
             font-weight: bold;
-            margin-top: 4px;
-        }
-        .map-link:hover { text-decoration: underline; color: #38bdf8; }
-
-        @media (max-width: 768px) {
-            .navbar { padding: 15px; }
-            .dash-actions { flex-direction: column; align-items: stretch; }
-            .search-box { width: 100%; }
+            word-break: break-all;
         }
     </style>
 </head>
@@ -427,7 +432,7 @@
     <nav class="navbar">
         <div class="brand-logo">
             <i class="fas fa-cubes"></i>
-            DEEPWELL <span class="brand-accent">RENTALS</span>
+            DEEPWELL <span class="brand-accent">APP</span>
         </div>
         <div class="user-nav-profile" id="navProfile">
             <div class="user-avatar" id="avatarText">JP</div>
@@ -435,7 +440,7 @@
                 <div class="u-name" id="userNameDisplay">Jorge Pantoja</div>
                 <div class="u-role" id="userRoleDisplay">Tech</div>
             </div>
-            <button class="btn-logout" onclick="logout()"><i class="fas fa-power-off"></i> LOGOUT</button>
+            <button class="btn-logout" onclick="logout()"><i class="fas fa-power-off"></i></button>
         </div>
     </nav>
 
@@ -462,7 +467,7 @@
 
                 <button type="submit" class="btn-glow">AUTHENTICATE</button>
             </form>
-            <div id="loginAlert" style="color: var(--danger); font-size: 0.85rem; margin-top: 15px; display: none;">
+            <div id="loginAlert" style="color: var(--danger); font-size: 0.8rem; margin-top: 12px; display: none;">
                 Invalid credentials, inactive account, or user not found.
             </div>
         </div>
@@ -481,18 +486,26 @@
 
         <div class="dash-actions">
             <div class="dash-title">
-                <i class="fas fa-clipboard-list" style="color: var(--primary-glow);"></i> <span id="tableHeaderTitle">OPEN WORK ORDERS</span>
+                <i class="fas fa-clipboard-list" style="color: var(--primary-glow);"></i> <span id="tableHeaderTitle">OPEN ORDERS</span>
             </div>
-            <div style="display: flex; gap: 10px;">
+            <div style="display: flex; gap: 8px; width: 100%;">
                 <div class="search-box">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" onkeyup="filterOrders()" placeholder="Search order ID, client...">
+                    <input type="text" id="searchInput" onkeyup="filterOrders()" placeholder="Search ID, client...">
                 </div>
-                <button class="btn-action-sm" onclick="loadDashboardData()"><i class="fas fa-sync-alt"></i> Refresh</button>
+                <button class="btn-action-sm" onclick="loadDashboardData()"><i class="fas fa-sync-alt"></i></button>
             </div>
         </div>
 
-        <div class="table-responsive">
+        <!-- VISTA MÓVIL EN FORMATO TARJETAS (Nativa / Estilo App) -->
+        <div class="orders-list" id="ordersMobileList">
+            <div style="text-align: center; color: #64748b; padding: 30px;">
+                <i class="fas fa-spinner fa-spin" style="font-size: 1.4rem; margin-bottom: 8px;"></i><br>Loading Orders...
+            </div>
+        </div>
+
+        <!-- VISTA TABLA PARA PC (Pantallas grandes) -->
+        <div class="table-desktop-wrapper">
             <table>
                 <thead>
                     <tr>
@@ -506,28 +519,18 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody id="ordersTableBody">
-                    <tr>
-                        <td colspan="8" style="text-align: center; color: #64748b; padding: 40px;">
-                            <i class="fas fa-spinner fa-spin" style="font-size: 1.5rem; margin-bottom: 10px;"></i><br>
-                            Loading Open Work Orders from Google Sheet...
-                        </td>
-                    </tr>
-                </tbody>
+                <tbody id="ordersTableBody"></tbody>
             </table>
         </div>
     </div>
 
-    <!-- GENERAL DETAILS & ASSIGNMENT MODAL -->
     <div class="modal-overlay" id="detailModal">
         <div class="modal-box">
             <div class="modal-header">
                 <h3 id="mOrderTitle">WORK ORDER DETAILS</h3>
                 <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
-            <div id="modalBodyContent" style="font-size: 0.95rem; line-height: 1.6; color: #cbd5e1;">
-                <!-- Dynamic Content -->
-            </div>
+            <div id="modalBodyContent" style="font-size: 0.95rem; line-height: 1.6; color: #cbd5e1;"></div>
         </div>
     </div>
 
@@ -547,7 +550,6 @@
             }
         });
 
-        // VALIDAR LOGIN CONTRA LA TABLA USERS DE GOOGLE SHEETS
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const userInput = document.getElementById('loginUser').value.trim();
@@ -555,7 +557,7 @@
 
             const alertBox = document.getElementById('loginAlert');
             alertBox.style.display = 'block';
-            alertBox.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Validating credentials in Google Sheet...';
+            alertBox.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Validating...';
 
             fetch(`${SCRIPT_URL}?action=getUsers`)
                 .then(res => res.json())
@@ -573,11 +575,10 @@
                         showDashboard();
                     } else {
                         alertBox.style.display = 'block';
-                        alertBox.innerHTML = "Invalid credentials, inactive account, or user not found.";
+                        alertBox.innerHTML = "Invalid credentials or inactive user.";
                     }
                 })
                 .catch(err => {
-                    console.error("Login error:", err);
                     alertBox.style.display = 'block';
                     alertBox.innerHTML = "Connection error validating users.";
                 });
@@ -593,10 +594,10 @@
             document.getElementById('avatarText').innerText = currentUser.name.split(' ').map(n => n[0]).join('');
 
             if (currentUser.rol.toLowerCase() === 'tech') {
-                document.getElementById('tableHeaderTitle').innerText = "MY ASSIGNED WORK ORDERS";
+                document.getElementById('tableHeaderTitle').innerText = "MY ASSIGNED ORDERS";
                 document.getElementById('metricLabel').innerText = "My Open Orders";
             } else {
-                document.getElementById('tableHeaderTitle').innerText = "ALL OPEN WORK ORDERS (DISPATCH COMMAND)";
+                document.getElementById('tableHeaderTitle').innerText = "DISPATCH COMMAND (ALL OPEN)";
                 document.getElementById('metricLabel').innerText = "Total Open Orders";
             }
 
@@ -612,13 +613,12 @@
         }
 
         function loadDashboardData() {
-            // Cargar Órdenes y también la lista de técnicos disponibles para asignar
             fetch(`${SCRIPT_URL}?action=getOrders`)
                 .then(res => res.json())
                 .then(data => {
                     if (Array.isArray(data)) {
                         activeOrdersData = data;
-                        renderTable();
+                        renderViews();
                     }
                 });
 
@@ -631,10 +631,7 @@
                 });
         }
 
-        function renderTable() {
-            const tbody = document.getElementById('ordersTableBody');
-            tbody.innerHTML = '';
-
+        function renderViews() {
             let filteredOrders = activeOrdersData.filter(o => String(o.status).trim().toLowerCase() === "open");
 
             if (currentUser.rol.toLowerCase() === 'tech') {
@@ -644,24 +641,59 @@
             // Ordenar del más reciente al más viejo según DateService (dateRaw)
             filteredOrders.sort((a, b) => new Date(b.dateRaw) - new Date(a.dateRaw));
 
+            document.getElementById('countOpen').innerText = filteredOrders.length;
+
+            const mobileList = document.getElementById('ordersMobileList');
+            const desktopTable = document.getElementById('ordersTableBody');
+            
+            mobileList.innerHTML = '';
+            desktopTable.innerHTML = '';
+
             if (filteredOrders.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:#64748b;">No open work orders found.</td></tr>`;
-                document.getElementById('countOpen').innerText = 0;
+                mobileList.innerHTML = `<div style="text-align:center; padding:30px; color:#64748b;">No open work orders found.</div>`;
+                desktopTable.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:#64748b;">No open work orders found.</td></tr>`;
                 return;
             }
 
-            document.getElementById('countOpen').innerText = filteredOrders.length;
-
             filteredOrders.forEach(item => {
-                const tr = document.createElement('tr');
-                // Al hacer clic en la fila se abren los detalles
-                tr.onclick = (e) => {
-                    if(e.target.tagName !== 'BUTTON') openDetailModal(item.id);
-                };
+                const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address)}`;
+
+                // 1. RENDERIZAR TARJETA MÓVIL (Estilo App Nativa)
+                const card = document.createElement('div');
+                card.className = 'order-card-mobile';
+                card.onclick = () => openDetailModal(item.id);
                 
-                let actionBtn = `<button class="btn-action-sm" onclick="openDetailModal('${item.id}')"><i class="fas fa-eye"></i> View</button>`;
+                let assignBtnMobile = '';
                 if (currentUser.rol.toLowerCase() === 'boss' || currentUser.rol.toLowerCase() === 'dispatch') {
-                    actionBtn = `<button class="btn-action-sm" onclick="openAssignModal(event, '${item.id}')"><i class="fas fa-user-tag"></i> Assign</button>`;
+                    assignBtnMobile = `<button class="btn-action-sm" onclick="openAssignModal(event, '${item.id}')"><i class="fas fa-user-tag"></i> Assign</button>`;
+                } else {
+                    assignBtnMobile = `<span style="font-size:0.75rem; color:var(--accent);"><i class="fas fa-chevron-right"></i> Tap details</span>`;
+                }
+
+                card.innerHTML = `
+                    <div class="card-top">
+                        <span class="card-id">${item.id}</span>
+                        <span class="badge-status">${item.status}</span>
+                    </div>
+                    <div class="card-body">
+                        <p><i class="fas fa-user"></i> <strong>${item.customer}</strong></p>
+                        <p><i class="fas fa-map-marker-alt" style="color:var(--danger);"></i> <span style="color:#93c5fd;">${item.address || 'No address specified'}</span></p>
+                        <p><i class="fas fa-tools"></i> ${item.service}</p>
+                    </div>
+                    <div class="card-footer">
+                        <span><i class="fas fa-user-gear" style="color:var(--gold);"></i> ${item.assigned}</span>
+                        ${assignBtnMobile}
+                    </div>
+                `;
+                mobileList.appendChild(card);
+
+                // 2. RENDERIZAR FILA DE TABLA (Para escritorio)
+                const tr = document.createElement('tr');
+                tr.onclick = (e) => { if(e.target.tagName !== 'BUTTON') openDetailModal(item.id); };
+                
+                let actionBtn = `<button class="btn-action-sm" onclick="openDetailModal('${item.id}')">View</button>`;
+                if (currentUser.rol.toLowerCase() === 'boss' || currentUser.rol.toLowerCase() === 'dispatch') {
+                    actionBtn = `<button class="btn-action-sm" onclick="openAssignModal(event, '${item.id}')">Assign</button>`;
                 }
 
                 tr.innerHTML = `
@@ -674,19 +706,22 @@
                     <td>${item.date}</td>
                     <td>${actionBtn}</td>
                 `;
-                tbody.appendChild(tr);
+                desktopTable.appendChild(tr);
             });
         }
 
         function filterOrders() {
             const q = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.order-card-mobile');
+            cards.forEach(c => {
+                c.style.display = c.innerText.toLowerCase().includes(q) ? '' : 'none';
+            });
             const rows = document.getElementById('ordersTableBody').getElementsByTagName('tr');
             for (let r of rows) {
                 r.style.display = r.innerText.toLowerCase().includes(q) ? '' : 'none';
             }
         }
 
-        // ABRIR MODAL CON DETALLES Y MAPA INTERACTIVO
         function openDetailModal(id) {
             selectedOrderId = id;
             const order = activeOrdersData.find(o => o.id === id);
@@ -694,26 +729,25 @@
 
             const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(order.address)}`;
 
-            document.getElementById('mOrderTitle').innerText = `WORK ORDER SUMMARY [${order.id}]`;
+            document.getElementById('mOrderTitle').innerText = `WORK ORDER [${order.id}]`;
             document.getElementById('modalBodyContent').innerHTML = `
                 <p><strong>Customer:</strong> ${order.customer}</p>
                 <p><strong>Phone:</strong> <a href="tel:${order.phone}" style="color:var(--primary-glow); text-decoration:none;">${order.phone || 'N/A'}</a></p>
-                <p><strong>Location / Address:</strong><br>
+                <p style="margin-top:10px;"><strong>Location / Address:</strong><br>
                    <a href="${mapsUrl}" target="_blank" class="map-link">
-                       <i class="fas fa-map-marker-alt"></i> ${order.address || 'No address specified'} (Open in Google Maps)
+                       <i class="fas fa-map-marker-alt"></i> ${order.address || 'No address specified'} (Tap to open Google Maps)
                    </a>
                 </p>
-                <p style="margin-top:10px;"><strong>Service Required:</strong> ${order.service}</p>
-                <p><strong>Assigned Technician:</strong> ${order.assigned}</p>
+                <p style="margin-top:10px;"><strong>Service:</strong> ${order.service}</p>
+                <p><strong>Assigned Tech:</strong> ${order.assigned}</p>
                 <p><strong>Date Opened:</strong> ${order.date}</p>
                 <hr style="border-color:var(--border); margin: 15px 0;">
                 <p><strong>Notes / Description:</strong></p>
-                <p style="background:rgba(255,255,255,0.03); padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); margin-top:5px;">${order.notes || 'No description notes provided.'}</p>
+                <p style="background:rgba(255,255,255,0.03); padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); margin-top:5px;">${order.notes || 'No description provided.'}</p>
             `;
             document.getElementById('detailModal').style.display = 'flex';
         }
 
-        // ABRIR MODAL DE ASIGNACIÓN (Boss / Dispatch)
         function openAssignModal(e, id) {
             e.stopPropagation();
             selectedOrderId = id;
@@ -760,15 +794,14 @@
                     mode: "no-cors"
                 })
                 .then(() => {
-                    alert(`Order ${selectedOrderId} assigned to ${newTech}! Columns G & N updated in Google Sheets.`);
+                    alert(`Order ${selectedOrderId} assigned to ${newTech}!`);
                     closeModal();
                     loadDashboardData();
                 })
                 .catch(err => {
-                    console.error("Error updating assignment:", err);
                     alert("Assignment saved locally.");
                     closeModal();
-                    renderTable();
+                    renderViews();
                 });
             }
         }
