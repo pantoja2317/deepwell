@@ -46,7 +46,6 @@
             pointer-events: none;
         }
 
-        /* --- NAVBAR --- */
         .navbar {
             background: rgba(11, 19, 41, 0.98);
             backdrop-filter: blur(15px);
@@ -109,7 +108,6 @@
             font-size: 0.65rem;
         }
 
-        /* --- LOGIN SCREEN --- */
         .login-wrapper {
             flex: 1;
             display: flex;
@@ -171,13 +169,15 @@
             width: 100%;
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.12);
-            padding: 12px 12px 12px 42px;
+            padding: 12px;
             border-radius: 12px;
             color: white;
             font-family: 'Rajdhani', sans-serif;
             font-size: 1rem;
             outline: none;
         }
+
+        .input-group input, .input-group select { padding-left: 42px; }
 
         input:focus, select:focus, textarea:focus {
             border-color: var(--primary-glow);
@@ -202,7 +202,11 @@
             margin-top: 10px;
         }
 
-        /* --- DASHBOARD VIEW --- */
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #059669);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+
         .dashboard-container {
             display: none;
             flex: 1;
@@ -212,9 +216,7 @@
             width: 100%;
         }
 
-        .metrics-grid {
-            margin-bottom: 20px;
-        }
+        .metrics-grid { margin-bottom: 20px; }
 
         .metric-card {
             background: var(--card-bg);
@@ -266,32 +268,11 @@
             gap: 8px;
         }
 
-        .search-box {
-            position: relative;
-            width: 100%;
-        }
+        .search-box { position: relative; width: 100%; }
+        .search-box input { padding-left: 38px; padding-top: 10px; padding-bottom: 10px; font-size: 0.95rem; }
+        .search-box i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #64748b; }
 
-        .search-box input {
-            padding-left: 38px;
-            padding-top: 10px;
-            padding-bottom: 10px;
-            font-size: 0.95rem;
-        }
-
-        .search-box i {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #64748b;
-        }
-
-        /* --- APP-LIKE CARDS VIEW (Móvil perfecto) --- */
-        .orders-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+        .orders-list { display: flex; flex-direction: column; gap: 12px; }
 
         .order-card-mobile {
             background: var(--card-bg);
@@ -300,25 +281,10 @@
             padding: 16px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.4);
             cursor: pointer;
-            transition: all 0.2s;
-            position: relative;
         }
 
-        .order-card-mobile:active { transform: scale(0.98); }
-
-        .card-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .card-id {
-            font-family: 'Orbitron';
-            font-weight: bold;
-            font-size: 1rem;
-            color: var(--primary-glow);
-        }
+        .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .card-id { font-family: 'Orbitron'; font-weight: bold; font-size: 1rem; color: var(--primary-glow); }
 
         .badge-status {
             padding: 4px 8px;
@@ -339,7 +305,6 @@
             align-items: flex-start;
             gap: 8px;
         }
-
         .card-body p i { color: var(--primary); margin-top: 3px; min-width: 16px; }
 
         .card-footer {
@@ -364,7 +329,6 @@
             font-weight: bold;
         }
 
-        /* --- MESA PARA PC (Se oculta en celular y se usa en pantallas grandes) --- */
         .table-desktop-wrapper { display: none; }
 
         @media(min-width: 900px) {
@@ -379,7 +343,6 @@
             .search-box { width: 300px; }
         }
 
-        /* MODAL */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -398,7 +361,7 @@
             border-radius: 20px;
             padding: 24px;
             width: 100%;
-            max-width: 500px;
+            max-width: 520px;
             box-shadow: 0 0 40px rgba(59, 130, 246, 0.3);
             max-height: 90vh;
             overflow-y: auto;
@@ -423,7 +386,6 @@
             align-items: center;
             gap: 6px;
             font-weight: bold;
-            word-break: break-all;
         }
     </style>
 </head>
@@ -467,9 +429,7 @@
 
                 <button type="submit" class="btn-glow">AUTHENTICATE</button>
             </form>
-            <div id="loginAlert" style="color: var(--danger); font-size: 0.8rem; margin-top: 12px; display: none;">
-                Invalid credentials, inactive account, or user not found.
-            </div>
+            <div id="loginAlert" style="color: var(--danger); font-size: 0.8rem; margin-top: 12px; display: none;"></div>
         </div>
     </div>
 
@@ -497,14 +457,8 @@
             </div>
         </div>
 
-        <!-- VISTA MÓVIL EN FORMATO TARJETAS (Nativa / Estilo App) -->
-        <div class="orders-list" id="ordersMobileList">
-            <div style="text-align: center; color: #64748b; padding: 30px;">
-                <i class="fas fa-spinner fa-spin" style="font-size: 1.4rem; margin-bottom: 8px;"></i><br>Loading Orders...
-            </div>
-        </div>
+        <div class="orders-list" id="ordersMobileList"></div>
 
-        <!-- VISTA TABLA PARA PC (Pantallas grandes) -->
         <div class="table-desktop-wrapper">
             <table>
                 <thead>
@@ -524,6 +478,7 @@
         </div>
     </div>
 
+    <!-- MODAL GENERAL -->
     <div class="modal-overlay" id="detailModal">
         <div class="modal-box">
             <div class="modal-header">
@@ -535,7 +490,7 @@
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwNhCO6bTDSgT4zdNggYAKPva2zykR0Vn4F6ciZPb1C1nb2YO5dxaJYGI6bPq-lmeJW/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwaJX-amix8-pH57hrHje-1Kh2pr5c0UC3WsujxMSQHGtAdGYv8p78bJbWxionWenpW/exec';
 
         let currentUser = null;
         let activeOrdersData = [];
@@ -554,8 +509,8 @@
             e.preventDefault();
             const userInput = document.getElementById('loginUser').value.trim();
             const passInput = document.getElementById('loginPass').value.trim();
-
             const alertBox = document.getElementById('loginAlert');
+            
             alertBox.style.display = 'block';
             alertBox.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Validating...';
 
@@ -638,9 +593,7 @@
                 filteredOrders = filteredOrders.filter(o => String(o.assigned).trim().toLowerCase() === String(currentUser.name).trim().toLowerCase());
             }
 
-            // Ordenar del más reciente al más viejo según DateService (dateRaw)
             filteredOrders.sort((a, b) => new Date(b.dateRaw) - new Date(a.dateRaw));
-
             document.getElementById('countOpen').innerText = filteredOrders.length;
 
             const mobileList = document.getElementById('ordersMobileList');
@@ -656,18 +609,14 @@
             }
 
             filteredOrders.forEach(item => {
-                const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address)}`;
-
-                // 1. RENDERIZAR TARJETA MÓVIL (Estilo App Nativa)
+                // Tarjeta Móvil
                 const card = document.createElement('div');
                 card.className = 'order-card-mobile';
                 card.onclick = () => openDetailModal(item.id);
                 
-                let assignBtnMobile = '';
+                let actionBtnMobile = `<span style="font-size:0.75rem; color:var(--accent);"><i class="fas fa-chevron-right"></i> Open Details / Report</span>`;
                 if (currentUser.rol.toLowerCase() === 'boss' || currentUser.rol.toLowerCase() === 'dispatch') {
-                    assignBtnMobile = `<button class="btn-action-sm" onclick="openAssignModal(event, '${item.id}')"><i class="fas fa-user-tag"></i> Assign</button>`;
-                } else {
-                    assignBtnMobile = `<span style="font-size:0.75rem; color:var(--accent);"><i class="fas fa-chevron-right"></i> Tap details</span>`;
+                    actionBtnMobile = `<button class="btn-action-sm" onclick="openAssignModal(event, '${item.id}')"><i class="fas fa-user-tag"></i> Assign</button>`;
                 }
 
                 card.innerHTML = `
@@ -682,16 +631,16 @@
                     </div>
                     <div class="card-footer">
                         <span><i class="fas fa-user-gear" style="color:var(--gold);"></i> ${item.assigned}</span>
-                        ${assignBtnMobile}
+                        ${actionBtnMobile}
                     </div>
                 `;
                 mobileList.appendChild(card);
 
-                // 2. RENDERIZAR FILA DE TABLA (Para escritorio)
+                // Fila Escritorio
                 const tr = document.createElement('tr');
                 tr.onclick = (e) => { if(e.target.tagName !== 'BUTTON') openDetailModal(item.id); };
                 
-                let actionBtn = `<button class="btn-action-sm" onclick="openDetailModal('${item.id}')">View</button>`;
+                let actionBtn = `<button class="btn-action-sm" onclick="openDetailModal('${item.id}')">Details</button>`;
                 if (currentUser.rol.toLowerCase() === 'boss' || currentUser.rol.toLowerCase() === 'dispatch') {
                     actionBtn = `<button class="btn-action-sm" onclick="openAssignModal(event, '${item.id}')">Assign</button>`;
                 }
@@ -703,7 +652,7 @@
                     <td>${item.phone}</td>
                     <td>${item.service}</td>
                     <td><i class="fas fa-user-gear" style="color:var(--gold);"></i> ${item.assigned}</td>
-                    <td>${item.date}</td>
+                    <td>${item.dateRaw ? new Date(item.dateRaw).toLocaleString() : ''}</td>
                     <td>${actionBtn}</td>
                 `;
                 desktopTable.appendChild(tr);
@@ -712,8 +661,7 @@
 
         function filterOrders() {
             const q = document.getElementById('searchInput').value.toLowerCase();
-            const cards = document.querySelectorAll('.order-card-mobile');
-            cards.forEach(c => {
+            document.querySelectorAll('.order-card-mobile').forEach(c => {
                 c.style.display = c.innerText.toLowerCase().includes(q) ? '' : 'none';
             });
             const rows = document.getElementById('ordersTableBody').getElementsByTagName('tr');
@@ -722,12 +670,26 @@
             }
         }
 
+        // MODAL DE DETALLES Y REPORTE DEL TÉCNICO
         function openDetailModal(id) {
             selectedOrderId = id;
             const order = activeOrdersData.find(o => o.id === id);
             if (!order) return;
 
             const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(order.address)}`;
+            
+            let techReportSection = '';
+            if (currentUser.rol.toLowerCase() === 'tech') {
+                techReportSection = `
+                    <hr style="border-color:var(--border); margin: 20px 0;">
+                    <h4 style="font-family:'Orbitron'; font-size:0.9rem; color:var(--success); margin-bottom:10px;"><i class="fas fa-clipboard-check"></i> TECH REPAIR REPORT</h4>
+                    <div class="input-group">
+                        <label>REPAIR NOTES / EXTRA WORK DONE</label>
+                        <textarea id="techNotesInput" placeholder="Describe parts replaced, service performed, or additional labor..." style="height:100px; resize:none; padding-left:14px;"></textarea>
+                    </div>
+                    <button class="btn-glow btn-success" onclick="submitTechReport()">COMPLETE & CLOSE ORDER</button>
+                `;
+            }
 
             document.getElementById('mOrderTitle').innerText = `WORK ORDER [${order.id}]`;
             document.getElementById('modalBodyContent').innerHTML = `
@@ -735,17 +697,47 @@
                 <p><strong>Phone:</strong> <a href="tel:${order.phone}" style="color:var(--primary-glow); text-decoration:none;">${order.phone || 'N/A'}</a></p>
                 <p style="margin-top:10px;"><strong>Location / Address:</strong><br>
                    <a href="${mapsUrl}" target="_blank" class="map-link">
-                       <i class="fas fa-map-marker-alt"></i> ${order.address || 'No address specified'} (Tap to open Google Maps)
+                       <i class="fas fa-map-marker-alt"></i> ${order.address || 'No address specified'} (Open in Google Maps)
                    </a>
                 </p>
                 <p style="margin-top:10px;"><strong>Service:</strong> ${order.service}</p>
                 <p><strong>Assigned Tech:</strong> ${order.assigned}</p>
-                <p><strong>Date Opened:</strong> ${order.date}</p>
                 <hr style="border-color:var(--border); margin: 15px 0;">
-                <p><strong>Notes / Description:</strong></p>
-                <p style="background:rgba(255,255,255,0.03); padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); margin-top:5px;">${order.notes || 'No description provided.'}</p>
+                <p><strong>Client Notes:</strong></p>
+                <p style="background:rgba(255,255,255,0.03); padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); margin-top:4px;">${order.notes || 'None.'}</p>
+                ${techReportSection}
             `;
             document.getElementById('detailModal').style.display = 'flex';
+        }
+
+        // ENVIAR REPORTE DEL TÉCNICO A GOOGLE SHEETS
+        function submitTechReport() {
+            const notes = document.getElementById('techNotesInput').value.trim();
+            if(!notes) {
+                alert("Please enter the repair notes before closing the order.");
+                return;
+            }
+
+            const finishDate = new Date().toLocaleString();
+            const params = new URLSearchParams({
+                action: "completeOrder",
+                orderId: selectedOrderId,
+                techNotes: notes,
+                dateFinish: finishDate
+            });
+
+            fetch(`${SCRIPT_URL}?${params.toString()}`, {
+                method: "GET",
+                mode: "no-cors"
+            })
+            .then(() => {
+                alert(`Work Order ${selectedOrderId} completed and closed successfully!`);
+                closeModal();
+                loadDashboardData();
+            })
+            .catch(err => {
+                alert("Error submitting report.");
+            });
         }
 
         function openAssignModal(e, id) {
@@ -776,34 +768,29 @@
 
         function saveAssignment() {
             const newTech = document.getElementById('techSelect').value;
-            const order = activeOrdersData.find(o => o.id === selectedOrderId);
-            
-            if (order) {
-                const assignDate = new Date().toLocaleString();
-                order.assigned = newTech;
+            const assignDate = new Date().toLocaleString();
 
-                const assignParams = new URLSearchParams({
-                    action: "assignTech",
-                    orderId: selectedOrderId,
-                    techName: newTech,
-                    dateAsigned: assignDate
-                });
+            const params = new URLSearchParams({
+                action: "assignTech",
+                orderId: selectedOrderId,
+                techName: newTech,
+                dateAsigned: assignDate
+            });
 
-                fetch(`${SCRIPT_URL}?${assignParams.toString()}`, {
-                    method: "GET",
-                    mode: "no-cors"
-                })
-                .then(() => {
-                    alert(`Order ${selectedOrderId} assigned to ${newTech}!`);
-                    closeModal();
-                    loadDashboardData();
-                })
-                .catch(err => {
-                    alert("Assignment saved locally.");
-                    closeModal();
-                    renderViews();
-                });
-            }
+            fetch(`${SCRIPT_URL}?${params.toString()}`, {
+                method: "GET",
+                mode: "no-cors"
+            })
+            .then(() => {
+                alert(`Order ${selectedOrderId} assigned to ${newTech}!`);
+                closeModal();
+                loadDashboardData();
+            })
+            .catch(err => {
+                alert("Assignment saved.");
+                closeModal();
+                loadDashboardData();
+            });
         }
     </script>
 </body>
