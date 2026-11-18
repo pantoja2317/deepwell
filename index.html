@@ -16,6 +16,7 @@
             --gold: #f59e0b;
             --success: #10b981;
             --danger: #ef4444;
+            --fuel: #f97316;
             --bg-dark: #070b14;
             --card-bg: rgba(15, 23, 42, 0.95);
             --border: rgba(59, 130, 246, 0.25);
@@ -143,7 +144,7 @@
         }
 
         .input-group {
-            margin-bottom: 15px;
+            margin-bottom: 14px;
             position: relative;
             text-align: left;
         }
@@ -177,7 +178,9 @@
             outline: none;
         }
 
-        .input-group input, .input-group select { padding-left: 42px; }
+        select option { background: #0f172a; color: white; }
+
+        .input-group.with-icon input, .input-group.with-icon select { padding-left: 42px; }
 
         input:focus, select:focus, textarea:focus {
             border-color: var(--primary-glow);
@@ -207,6 +210,11 @@
             box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
         }
 
+        .btn-fuel {
+            background: linear-gradient(135deg, var(--fuel), #ea580c);
+            box-shadow: 0 8px 25px rgba(249, 115, 22, 0.4);
+        }
+
         .dashboard-container {
             display: none;
             flex: 1;
@@ -216,16 +224,106 @@
             width: 100%;
         }
 
-        .metrics-grid { margin-bottom: 20px; }
+        /* --- SELECTOR DE MÓDULOS PRINCIPALES --- */
+        .module-switcher {
+            display: none;
+            gap: 10px;
+            margin-bottom: 18px;
+            background: rgba(15, 23, 42, 0.8);
+            padding: 6px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+        }
+
+        .mod-btn {
+            flex: 1;
+            padding: 12px 10px;
+            background: transparent;
+            border: none;
+            border-radius: 10px;
+            color: #94a3b8;
+            font-family: 'Orbitron';
+            font-size: 0.75rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.25s;
+        }
+
+        .mod-btn.active {
+            background: linear-gradient(135deg, var(--primary), #1d4ed8);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+        }
+
+        .mod-btn.active.gen-mode {
+            background: linear-gradient(135deg, var(--fuel), #c2410c);
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+        }
+
+        /* --- SUB-PESTAÑAS --- */
+        .tab-navigation {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: #94a3b8;
+            font-family: 'Orbitron';
+            font-size: 0.7rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .tab-btn.active {
+            background: rgba(37, 99, 235, 0.2);
+            border-color: var(--primary-glow);
+            color: #fff;
+        }
+
+        .tab-btn.tab-closed.active {
+            background: rgba(16, 185, 129, 0.2);
+            border-color: var(--success);
+            color: #fff;
+        }
+
+        .tab-btn.tab-fuel.active {
+            background: rgba(249, 115, 22, 0.2);
+            border-color: var(--fuel);
+            color: #fff;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 18px;
+        }
 
         .metric-card {
             background: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 14px;
-            padding: 16px;
+            padding: 14px;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             position: relative;
             overflow: hidden;
         }
@@ -237,31 +335,37 @@
             background: var(--gold);
         }
 
+        .metric-card.closed-card::before { background: var(--success); }
+        .metric-card.fuel-card::before { background: var(--fuel); }
+
         .metric-icon {
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             border-radius: 10px;
             background: rgba(255, 255, 255, 0.05);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: var(--gold);
         }
 
-        .metric-data h3 { font-family: 'Orbitron'; font-size: 1.4rem; font-weight: 800; }
-        .metric-data p { font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
+        .metric-card.closed-card .metric-icon { color: var(--success); }
+        .metric-card.fuel-card .metric-icon { color: var(--fuel); }
+
+        .metric-data h3 { font-family: 'Orbitron'; font-size: 1.3rem; font-weight: 800; }
+        .metric-data p { font-size: 0.7rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.8px; }
 
         .dash-actions {
             display: flex;
             flex-direction: column;
             gap: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .dash-title {
             font-family: 'Orbitron';
-            font-size: 1rem;
+            font-size: 0.95rem;
             letter-spacing: 1px;
             display: flex;
             align-items: center;
@@ -283,7 +387,12 @@
             cursor: pointer;
         }
 
-        .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .order-card-mobile.fuel-active-border {
+            border-color: rgba(249, 115, 22, 0.55);
+            box-shadow: 0 8px 20px rgba(249, 115, 22, 0.15);
+        }
+
+        .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 6px; flex-wrap: wrap; }
         .card-id { font-family: 'Orbitron'; font-weight: bold; font-size: 1rem; color: var(--primary-glow); }
 
         .badge-status {
@@ -295,6 +404,24 @@
             background: rgba(245, 158, 11, 0.15); 
             color: var(--gold); 
             border: 1px solid rgba(245, 158, 11, 0.4);
+        }
+
+        .badge-status.badge-closed-status {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            border-color: rgba(16, 185, 129, 0.4);
+        }
+
+        .badge-status.badge-fuel-on {
+            background: rgba(249, 115, 22, 0.2);
+            color: #fb923c;
+            border-color: rgba(249, 115, 22, 0.5);
+        }
+
+        .badge-status.badge-fuel-off {
+            background: rgba(148, 163, 184, 0.1);
+            color: #94a3b8;
+            border-color: rgba(148, 163, 184, 0.3);
         }
 
         .card-body p {
@@ -316,17 +443,25 @@
             border-top: 1px solid rgba(255, 255, 255, 0.08);
             font-size: 0.8rem;
             color: #94a3b8;
+            gap: 8px;
         }
 
         .btn-action-sm {
-            padding: 8px 14px;
+            padding: 8px 12px;
             background: rgba(59, 130, 246, 0.2);
             border: 1px solid var(--border);
             color: var(--primary-glow);
             border-radius: 8px;
             font-family: 'Orbitron';
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-action-fuel {
+            background: rgba(249, 115, 22, 0.2);
+            border-color: rgba(249, 115, 22, 0.5);
+            color: #fdba74;
         }
 
         .table-desktop-wrapper { display: none; }
@@ -359,11 +494,11 @@
             background: #0f172a;
             border: 1px solid var(--border-glow);
             border-radius: 20px;
-            padding: 24px;
+            padding: 22px;
             width: 100%;
-            max-width: 520px;
+            max-width: 540px;
             box-shadow: 0 0 40px rgba(59, 130, 246, 0.3);
-            max-height: 90vh;
+            max-height: 92vh;
             overflow-y: auto;
         }
 
@@ -387,6 +522,21 @@
             gap: 6px;
             font-weight: bold;
         }
+
+        .two-col-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .service-history-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 3px solid var(--accent);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+        }
     </style>
 </head>
 <body>
@@ -406,6 +556,7 @@
         </div>
     </nav>
 
+    <!-- LOGIN -->
     <div class="login-wrapper" id="loginWrapper">
         <div class="login-card">
             <div style="font-size: 2.2rem; color: var(--primary); margin-bottom: 10px;">
@@ -415,13 +566,13 @@
             <p>DeepWell Operations Portal</p>
 
             <form id="loginForm">
-                <div class="input-group">
+                <div class="input-group with-icon">
                     <label>USER / USERNAME</label>
                     <i class="fas fa-user"></i>
                     <input type="text" id="loginUser" placeholder="e.g. Pantoja" required>
                 </div>
 
-                <div class="input-group">
+                <div class="input-group with-icon">
                     <label>PASSWORD</label>
                     <i class="fas fa-lock"></i>
                     <input type="password" id="loginPass" placeholder="••••••••" required>
@@ -433,56 +584,146 @@
         </div>
     </div>
 
+    <!-- MAIN APP CONTAINER -->
     <div class="dashboard-container" id="dashboardView">
-        <div class="metrics-grid">
-            <div class="metric-card">
-                <div class="metric-icon"><i class="fas fa-folder-open"></i></div>
-                <div class="metric-data">
-                    <h3 id="countOpen">0</h3>
-                    <p id="metricLabel">Open Work Orders</p>
+        
+        <!-- SELECTOR DE MÓDULOS (Boss & Dispatch) -->
+        <div class="module-switcher" id="moduleSwitcher">
+            <button class="mod-btn active" id="modWorkOrdersBtn" onclick="switchModule('workorders')">
+                <i class="fas fa-wrench"></i> WORK ORDERS
+            </button>
+            <button class="mod-btn" id="modGeneratorsBtn" onclick="switchModule('generators')">
+                <i class="fas fa-gas-pump"></i> GENERATORS & FUEL
+            </button>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- SECCIÓN 1: WORK ORDERS                     -->
+        <!-- ========================================== -->
+        <div id="workOrdersSection">
+            <div class="tab-navigation" id="tabNav" style="display: none;">
+                <button class="tab-btn active" id="tabOpenBtn" onclick="switchTab('open')">
+                    <i class="fas fa-folder-open"></i> OPEN (<span id="countOpenTab">0</span>)
+                </button>
+                <button class="tab-btn tab-closed" id="tabClosedBtn" onclick="switchTab('closed')">
+                    <i class="fas fa-check-circle"></i> CLOSED (<span id="countClosedTab">0</span>)
+                </button>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card" id="metricCardBox">
+                    <div class="metric-icon" id="metricIcon"><i class="fas fa-folder-open"></i></div>
+                    <div class="metric-data">
+                        <h3 id="countOpen">0</h3>
+                        <p id="metricLabel">Open Work Orders</p>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="dash-actions">
-            <div class="dash-title">
-                <i class="fas fa-clipboard-list" style="color: var(--primary-glow);"></i> <span id="tableHeaderTitle">OPEN ORDERS</span>
-            </div>
-            <div style="display: flex; gap: 8px; width: 100%;">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" onkeyup="filterOrders()" placeholder="Search ID, client...">
+            <div class="dash-actions">
+                <div class="dash-title">
+                    <i class="fas fa-clipboard-list" style="color: var(--primary-glow);"></i> <span id="tableHeaderTitle">OPEN ORDERS</span>
                 </div>
-                <button class="btn-action-sm" onclick="loadDashboardData()"><i class="fas fa-sync-alt"></i></button>
+                <div style="display: flex; gap: 8px; width: 100%;">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" onkeyup="filterOrders()" placeholder="Search ID, client...">
+                    </div>
+                    <button class="btn-action-sm" onclick="loadDashboardData()"><i class="fas fa-sync-alt"></i></button>
+                </div>
+            </div>
+
+            <div class="orders-list" id="ordersMobileList"></div>
+
+            <div class="table-desktop-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Status</th>
+                            <th>Customer / Location</th>
+                            <th>Phone</th>
+                            <th>Service Category</th>
+                            <th>Assigned Tech</th>
+                            <th>Date Opened</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTableBody"></tbody>
+                </table>
             </div>
         </div>
 
-        <div class="orders-list" id="ordersMobileList"></div>
+        <!-- ========================================== -->
+        <!-- SECCIÓN 2: GENERATORS & FUEL ROUTE (LubTech) -->
+        <!-- ========================================== -->
+        <div id="generatorsSection" style="display: none;">
+            <div class="tab-navigation">
+                <button class="tab-btn tab-fuel active" id="tabGenAllBtn" onclick="switchGenFilter('all')">
+                    <i class="fas fa-bolt"></i> IN RENT / ACTIVE (<span id="countGenActiveTab">0</span>)
+                </button>
+                <button class="tab-btn tab-fuel" id="tabGenFuelBtn" onclick="switchGenFilter('fuel')">
+                    <i class="fas fa-gas-pump"></i> FUEL ROUTE ON (<span id="countGenFuelTab">0</span>)
+                </button>
+            </div>
 
-        <div class="table-desktop-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Status</th>
-                        <th>Customer / Location</th>
-                        <th>Phone</th>
-                        <th>Service Category</th>
-                        <th>Assigned Tech</th>
-                        <th>Date Opened</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="ordersTableBody"></tbody>
-            </table>
+            <div class="metrics-grid">
+                <div class="metric-card closed-card">
+                    <div class="metric-icon"><i class="fas fa-bolt"></i></div>
+                    <div class="metric-data">
+                        <h3 id="countGenActive">0</h3>
+                        <p>Active Generators (Rent)</p>
+                    </div>
+                </div>
+                <div class="metric-card fuel-card">
+                    <div class="metric-icon"><i class="fas fa-gas-pump"></i></div>
+                    <div class="metric-data">
+                        <h3 id="countGenFuel">0</h3>
+                        <p>On Fuel Route</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dash-actions">
+                <div class="dash-title">
+                    <i class="fas fa-oil-can" style="color: var(--fuel);"></i> <span>GENERATOR FLEET & PM SERVICES</span>
+                </div>
+                <div style="display: flex; gap: 8px; width: 100%;">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchGenInput" onkeyup="filterGenerators()" placeholder="Search GenNum, Unit, Yard...">
+                    </div>
+                    <button class="btn-action-sm btn-action-fuel" onclick="loadDashboardData()"><i class="fas fa-sync-alt"></i></button>
+                </div>
+            </div>
+
+            <div class="orders-list" id="generatorsMobileList"></div>
+
+            <div class="table-desktop-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>GenNum</th>
+                            <th>KWGen</th>
+                            <th>UnitNum</th>
+                            <th>Yard</th>
+                            <th>FuelRute</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="generatorsTableBody"></tbody>
+                </table>
+            </div>
         </div>
+
     </div>
 
     <!-- MODAL GENERAL -->
     <div class="modal-overlay" id="detailModal">
         <div class="modal-box">
             <div class="modal-header">
-                <h3 id="mOrderTitle">WORK ORDER DETAILS</h3>
+                <h3 id="mOrderTitle">DETAILS</h3>
                 <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
             <div id="modalBodyContent" style="font-size: 0.95rem; line-height: 1.6; color: #cbd5e1;"></div>
@@ -490,12 +731,18 @@
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwaJX-amix8-pH57hrHje-1Kh2pr5c0UC3WsujxMSQHGtAdGYv8p78bJbWxionWenpW/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbytH509dJAefYY7Ng6mowbGHMXxf2qfxLy_sEv1GzETiML5z5aOBWmJgsryJ_Yzn8Es/exec';
 
         let currentUser = null;
         let activeOrdersData = [];
         let activeUsersList = [];
+        let generatorsData = [];
+        let genServicesData = [];
+        
         let selectedOrderId = null;
+        let currentTab = 'open';
+        let currentModule = 'workorders';
+        let currentGenFilter = 'all'; // 'all' o 'fuel'
 
         document.addEventListener('DOMContentLoaded', () => {
             const savedUser = localStorage.getItem('deepwell_session');
@@ -548,15 +795,73 @@
             document.getElementById('userRoleDisplay').innerText = currentUser.rol + " / " + currentUser.department;
             document.getElementById('avatarText').innerText = currentUser.name.split(' ').map(n => n[0]).join('');
 
-            if (currentUser.rol.toLowerCase() === 'tech') {
+            const role = currentUser.rol.toLowerCase();
+            const isManagement = role === 'boss' || role === 'dispatch';
+
+            if (isManagement) {
+                document.getElementById('moduleSwitcher').style.display = 'flex';
+                document.getElementById('tabNav').style.display = 'flex';
+                switchModule('workorders');
+            } else if (role === 'lubtech') {
+                // LubTech va directo al módulo de Generadores & Fuel Route
+                document.getElementById('moduleSwitcher').style.display = 'none';
+                switchModule('generators');
+            } else {
+                // Tech normal va a sus Work Orders asignadas
+                document.getElementById('moduleSwitcher').style.display = 'none';
+                document.getElementById('tabNav').style.display = 'none';
                 document.getElementById('tableHeaderTitle').innerText = "MY ASSIGNED ORDERS";
                 document.getElementById('metricLabel').innerText = "My Open Orders";
-            } else {
-                document.getElementById('tableHeaderTitle').innerText = "DISPATCH COMMAND (ALL OPEN)";
-                document.getElementById('metricLabel').innerText = "Total Open Orders";
+                switchModule('workorders');
             }
 
             loadDashboardData();
+        }
+
+        function switchModule(mod) {
+            currentModule = mod;
+            document.getElementById('modWorkOrdersBtn').classList.toggle('active', mod === 'workorders');
+            document.getElementById('modGeneratorsBtn').classList.toggle('active', mod === 'generators');
+            document.getElementById('modGeneratorsBtn').classList.toggle('gen-mode', mod === 'generators');
+
+            document.getElementById('workOrdersSection').style.display = mod === 'workorders' ? 'block' : 'none';
+            document.getElementById('generatorsSection').style.display = mod === 'generators' ? 'block' : 'none';
+
+            if (mod === 'generators') {
+                renderGenerators();
+            } else {
+                renderViews();
+            }
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.getElementById('tabOpenBtn').classList.toggle('active', tab === 'open');
+            document.getElementById('tabClosedBtn').classList.toggle('active', tab === 'closed');
+            
+            const box = document.getElementById('metricCardBox');
+            const icon = document.getElementById('metricIcon');
+            
+            if (tab === 'open') {
+                box.classList.remove('closed-card');
+                icon.innerHTML = '<i class="fas fa-folder-open"></i>';
+                document.getElementById('metricLabel').innerText = "Total Open Orders";
+                document.getElementById('tableHeaderTitle').innerText = "DISPATCH COMMAND (OPEN)";
+            } else {
+                box.classList.add('closed-card');
+                icon.innerHTML = '<i class="fas fa-check-circle"></i>';
+                document.getElementById('metricLabel').innerText = "Completed Orders";
+                document.getElementById('tableHeaderTitle').innerText = "CLOSED / COMPLETED ORDERS";
+            }
+
+            renderViews();
+        }
+
+        function switchGenFilter(filter) {
+            currentGenFilter = filter;
+            document.getElementById('tabGenAllBtn').classList.toggle('active', filter === 'all');
+            document.getElementById('tabGenFuelBtn').classList.toggle('active', filter === 'fuel');
+            renderGenerators();
         }
 
         function logout() {
@@ -568,15 +873,17 @@
         }
 
         function loadDashboardData() {
+            // 1. Cargar WorkOrders
             fetch(`${SCRIPT_URL}?action=getOrders`)
                 .then(res => res.json())
                 .then(data => {
                     if (Array.isArray(data)) {
                         activeOrdersData = data;
-                        renderViews();
+                        if (currentModule === 'workorders') renderViews();
                     }
                 });
 
+            // 2. Cargar Users
             fetch(`${SCRIPT_URL}?action=getUsers`)
                 .then(res => res.json())
                 .then(data => {
@@ -584,13 +891,304 @@
                         activeUsersList = data.filter(u => u.status.toLowerCase() === 'active' && u.rol.toLowerCase() === 'tech');
                     }
                 });
+
+            // 3. Cargar Generadores
+            fetch(`${SCRIPT_URL}?action=getGenerators`)
+                .then(res => res.json())
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        generatorsData = data;
+                        if (currentModule === 'generators') renderGenerators();
+                    }
+                });
+
+            // 4. Cargar Historial de Servicios de Generadores
+            fetch(`${SCRIPT_URL}?action=getGenServices`)
+                .then(res => res.json())
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        genServicesData = data;
+                    }
+                });
         }
 
-        function renderViews() {
-            let filteredOrders = activeOrdersData.filter(o => String(o.status).trim().toLowerCase() === "open");
+        // ==========================================
+        // RENDERIZAR GENERADORES & FUEL ROUTE
+        // ==========================================
+        function renderGenerators() {
+            // Filtrar solo los generadores con Active = On (en renta)
+            let activeGens = generatorsData.filter(g => String(g.active).trim().toLowerCase() === 'on');
+            let fuelGens = activeGens.filter(g => String(g.fuelRute).trim().toLowerCase() === 'on');
 
-            if (currentUser.rol.toLowerCase() === 'tech') {
-                filteredOrders = filteredOrders.filter(o => String(o.assigned).trim().toLowerCase() === String(currentUser.name).trim().toLowerCase());
+            document.getElementById('countGenActive').innerText = activeGens.length;
+            document.getElementById('countGenFuel').innerText = fuelGens.length;
+            document.getElementById('countGenActiveTab').innerText = activeGens.length;
+            document.getElementById('countGenFuelTab').innerText = fuelGens.length;
+
+            let listToRender = currentGenFilter === 'fuel' ? fuelGens : activeGens;
+
+            const mobileList = document.getElementById('generatorsMobileList');
+            const desktopTable = document.getElementById('generatorsTableBody');
+            mobileList.innerHTML = '';
+            desktopTable.innerHTML = '';
+
+            if (listToRender.length === 0) {
+                const msg = currentGenFilter === 'fuel' ? 'No generators currently flagged on Fuel Route.' : 'No active generators in rent.';
+                mobileList.innerHTML = `<div style="text-align:center; padding:30px; color:#64748b;">${msg}</div>`;
+                desktopTable.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#64748b;">${msg}</td></tr>`;
+                return;
+            }
+
+            listToRender.forEach(gen => {
+                const isFuelOn = String(gen.fuelRute).trim().toLowerCase() === 'on';
+                const fuelBadgeClass = isFuelOn ? 'badge-status badge-fuel-on' : 'badge-status badge-fuel-off';
+                const fuelText = isFuelOn ? 'FUEL ROUTE: ON' : 'FUEL ROUTE: OFF';
+                const cardBorderClass = isFuelOn ? 'order-card-mobile fuel-active-border' : 'order-card-mobile';
+
+                // 1. Tarjeta Móvil
+                const card = document.createElement('div');
+                card.className = cardBorderClass;
+                card.onclick = () => openGenServiceModal(gen.genNum);
+
+                card.innerHTML = `
+                    <div class="card-top">
+                        <span class="card-id" style="color:var(--accent);">${gen.genNum} <small style="color:#94a3b8; font-size:0.75rem;">(Unit #${gen.unitNum})</small></span>
+                        <span class="${fuelBadgeClass}"><i class="fas fa-gas-pump"></i> ${fuelText}</span>
+                    </div>
+                    <div class="card-body">
+                        <p><i class="fas fa-bolt" style="color:var(--gold);"></i> <strong>${gen.kwGen} KW</strong> Generator</p>
+                        <p><i class="fas fa-map-pin" style="color:var(--danger);"></i> Yard / Location: <strong>${gen.yard}</strong></p>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn-action-sm" onclick="toggleFuelQuick(event, '${gen.genNum}', '${isFuelOn ? 'Off' : 'On'}')">
+                            <i class="fas fa-gas-pump"></i> Set Fuel ${isFuelOn ? 'OFF' : 'ON'}
+                        </button>
+                        <button class="btn-action-sm btn-action-fuel">
+                            <i class="fas fa-oil-can"></i> Log Service
+                        </button>
+                    </div>
+                `;
+                mobileList.appendChild(card);
+
+                // 2. Tabla Escritorio
+                const tr = document.createElement('tr');
+                tr.onclick = (e) => { if(e.target.tagName !== 'BUTTON') openGenServiceModal(gen.genNum); };
+
+                tr.innerHTML = `
+                    <td style="font-family:'Orbitron'; font-weight:bold; color:var(--accent);">${gen.genNum}</td>
+                    <td><strong>${gen.kwGen} KW</strong></td>
+                    <td>#${gen.unitNum}</td>
+                    <td><i class="fas fa-map-pin" style="color:var(--danger);"></i> ${gen.yard}</td>
+                    <td><span class="${fuelBadgeClass}">${fuelText}</span></td>
+                    <td><span class="badge-status badge-closed-status">ACTIVE (IN RENT)</span></td>
+                    <td style="display:flex; gap:6px;">
+                        <button class="btn-action-sm" onclick="toggleFuelQuick(event, '${gen.genNum}', '${isFuelOn ? 'Off' : 'On'}')">Fuel ${isFuelOn ? 'OFF' : 'ON'}</button>
+                        <button class="btn-action-sm btn-action-fuel" onclick="openGenServiceModal('${gen.genNum}')"><i class="fas fa-oil-can"></i> Service</button>
+                    </td>
+                `;
+                desktopTable.appendChild(tr);
+            });
+        }
+
+        function filterGenerators() {
+            const q = document.getElementById('searchGenInput').value.toLowerCase();
+            document.querySelectorAll('#generatorsMobileList .order-card-mobile').forEach(c => {
+                c.style.display = c.innerText.toLowerCase().includes(q) ? '' : 'none';
+            });
+            const rows = document.getElementById('generatorsTableBody').getElementsByTagName('tr');
+            for (let r of rows) {
+                r.style.display = r.innerText.toLowerCase().includes(q) ? '' : 'none';
+            }
+        }
+
+        function toggleFuelQuick(e, genNum, newState) {
+            e.stopPropagation();
+            const gen = generatorsData.find(g => g.genNum === genNum);
+            if (gen) gen.fuelRute = newState;
+            renderGenerators();
+
+            const params = new URLSearchParams({
+                action: "toggleFuelRoute",
+                genNum: genNum,
+                fuelRute: newState
+            });
+
+            fetch(`${SCRIPT_URL}?${params.toString()}`, { method: "GET", mode: "no-cors" })
+                .then(() => console.log(`FuelRute updated for ${genNum} -> ${newState}`));
+        }
+
+        // MODAL PARA QUE LUBTECH LLENE EL SERVICIO DEL GENERADOR
+        function openGenServiceModal(genNum) {
+            const gen = generatorsData.find(g => g.genNum === genNum);
+            if (!gen) return;
+
+            // Buscar historial previo de este generador
+            const history = genServicesData.filter(s => s.genNum === genNum).reverse();
+            let lastHrs = history.length > 0 ? history[0].hrs : "";
+            let lastCustomer = history.length > 0 ? history[0].customer : "";
+            let lastLease = history.length > 0 ? history[0].lease : "";
+
+            let historyHtml = '';
+            if (history.length > 0) {
+                historyHtml = `<div style="margin-top:15px;"><p style="font-family:'Orbitron'; font-size:0.75rem; color:#94a3b8; margin-bottom:8px;">RECENT SERVICE LOGS:</p>`;
+                history.slice(0, 3).forEach(h => {
+                    historyHtml += `
+                        <div class="service-history-item">
+                            <strong>${h.idService}</strong> • ${h.typeService} (${h.hrs} Hrs)<br>
+                            <small style="color:#94a3b8;">Customer: ${h.customer || 'N/A'} | Lease: ${h.lease || 'N/A'} | Next Due: ${h.hrsNextService} Hrs</small>
+                        </div>
+                    `;
+                });
+                historyHtml += `</div>`;
+            }
+
+            document.getElementById('mOrderTitle').innerText = `GENERATOR SERVICE [${gen.genNum}]`;
+            document.getElementById('modalBodyContent').innerHTML = `
+                <div style="background:rgba(255,255,255,0.03); padding:10px; border-radius:10px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <strong style="color:var(--accent); font-size:1.05rem;">Unit #${gen.unitNum} (${gen.kwGen} KW)</strong><br>
+                        <small style="color:#94a3b8;">Yard: ${gen.yard} | Last Recorded Hrs: ${lastHrs || 'N/A'}</small>
+                    </div>
+                    <span class="badge-status ${gen.fuelRute.toLowerCase() === 'on' ? 'badge-fuel-on' : 'badge-fuel-off'}">
+                        Fuel: ${gen.fuelRute}
+                    </span>
+                </div>
+
+                <div class="two-col-grid">
+                    <div class="input-group">
+                        <label>CURRENT ENGINE HRS *</label>
+                        <input type="number" id="srvHrs" placeholder="e.g. 1250" oninput="autoCalcNextHrs()" required>
+                    </div>
+                    <div class="input-group">
+                        <label>NEXT SERVICE HRS *</label>
+                        <input type="number" id="srvNextHrs" placeholder="e.g. 1500" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>TYPE OF SERVICE *</label>
+                    <select id="srvType">
+                        <option value="PM Service (250 Hrs)">PM Service (250 Hrs - Oil & Filters)</option>
+                        <option value="PM Major Service (500 Hrs)">PM Major Service (500 Hrs)</option>
+                        <option value="Fueling / Diesel Refill">Fueling / Diesel Refill</option>
+                        <option value="Routine Inspection & Fluids">Routine Inspection & Fluids</option>
+                        <option value="Corrective / Field Repair">Corrective / Field Repair</option>
+                    </select>
+                </div>
+
+                <div class="two-col-grid">
+                    <div class="input-group">
+                        <label>CUSTOMER *</label>
+                        <input type="text" id="srvCustomer" value="${lastCustomer}" placeholder="Client Name" required>
+                    </div>
+                    <div class="input-group">
+                        <label>LEASE / WELL SITE *</label>
+                        <input type="text" id="srvLease" value="${lastLease}" placeholder="e.g. Permian Pad 4" required>
+                    </div>
+                </div>
+
+                <div class="two-col-grid">
+                    <div class="input-group">
+                        <label>START RENT (Optional)</label>
+                        <input type="date" id="srvStartRent">
+                    </div>
+                    <div class="input-group">
+                        <label>STOP RENT (Optional)</label>
+                        <input type="date" id="srvStopRent">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>UPDATE FUEL ROUTE STATUS</label>
+                    <select id="srvFuelStatus">
+                        <option value="Off" ${gen.fuelRute.toLowerCase() === 'off' ? 'selected' : ''}>Fuel Route: OFF (Fueled / Not Needed)</option>
+                        <option value="On" ${gen.fuelRute.toLowerCase() === 'on' ? 'selected' : ''}>Fuel Route: ON (Needs Fuel Route)</option>
+                    </select>
+                </div>
+
+                <button class="btn-glow btn-fuel" onclick="submitGeneratorService('${gen.genNum}')">
+                    <i class="fas fa-save"></i> SAVE SERVICE RECORD
+                </button>
+
+                ${historyHtml}
+            `;
+            document.getElementById('detailModal').style.display = 'flex';
+        }
+
+        // Calcula automáticamente +250 horas para el próximo mantenimiento
+        function autoCalcNextHrs() {
+            const hrs = parseFloat(document.getElementById('srvHrs').value);
+            if (!isNaN(hrs)) {
+                document.getElementById('srvNextHrs').value = hrs + 250;
+            }
+        }
+
+        function submitGeneratorService(genNum) {
+            const hrs = document.getElementById('srvHrs').value.trim();
+            const hrsNextService = document.getElementById('srvNextHrs').value.trim();
+            const typeService = document.getElementById('srvType').value;
+            const customer = document.getElementById('srvCustomer').value.trim();
+            const lease = document.getElementById('srvLease').value.trim();
+            const starRent = document.getElementById('srvStartRent').value;
+            const stopRent = document.getElementById('srvStopRent').value;
+            const fuelRute = document.getElementById('srvFuelStatus').value;
+
+            if (!hrs || !customer || !lease) {
+                alert("Please fill in Current Hours, Customer, and Lease.");
+                return;
+            }
+
+            const params = new URLSearchParams({
+                action: "addGenService",
+                genNum: genNum,
+                hrs: hrs,
+                typeService: `${typeService} (By: ${currentUser.name})`,
+                customer: customer,
+                lease: lease,
+                starRent: starRent,
+                stopRent: stopRent,
+                hrsNextService: hrsNextService,
+                fuelRute: fuelRute
+            });
+
+            fetch(`${SCRIPT_URL}?${params.toString()}`, {
+                method: "GET",
+                mode: "no-cors"
+            })
+            .then(() => {
+                alert(`Service logged for ${genNum}! Next service due at ${hrsNextService} Hrs.`);
+                closeModal();
+                loadDashboardData();
+            })
+            .catch(err => {
+                alert("Error saving service record.");
+            });
+        }
+
+        // ==========================================
+        // RENDERIZAR WORK ORDERS (Módulo existente)
+        // ==========================================
+        function renderViews() {
+            const isManagement = currentUser.rol.toLowerCase() === 'boss' || currentUser.rol.toLowerCase() === 'dispatch';
+
+            const openOrdersCount = activeOrdersData.filter(o => String(o.status).trim().toLowerCase() === "open").length;
+            const closedOrdersCount = activeOrdersData.filter(o => String(o.status).trim().toLowerCase() === "closed").length;
+
+            if (isManagement) {
+                document.getElementById('countOpenTab').innerText = openOrdersCount;
+                document.getElementById('countClosedTab').innerText = closedOrdersCount;
+            }
+
+            let filteredOrders = activeOrdersData.filter(o => {
+                const s = String(o.status).trim().toLowerCase();
+                return currentTab === 'open' ? s === 'open' : s === 'closed';
+            });
+
+            if (!isManagement) {
+                filteredOrders = activeOrdersData.filter(o => 
+                    String(o.status).trim().toLowerCase() === "open" && 
+                    String(o.assigned).trim().toLowerCase() === String(currentUser.name).trim().toLowerCase()
+                );
             }
 
             filteredOrders.sort((a, b) => new Date(b.dateRaw) - new Date(a.dateRaw));
@@ -603,26 +1201,29 @@
             desktopTable.innerHTML = '';
 
             if (filteredOrders.length === 0) {
-                mobileList.innerHTML = `<div style="text-align:center; padding:30px; color:#64748b;">No open work orders found.</div>`;
-                desktopTable.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:#64748b;">No open work orders found.</td></tr>`;
+                const emptyMsg = currentTab === 'open' ? 'No open work orders found.' : 'No completed work orders logged yet.';
+                mobileList.innerHTML = `<div style="text-align:center; padding:30px; color:#64748b;">${emptyMsg}</div>`;
+                desktopTable.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:#64748b;">${emptyMsg}</td></tr>`;
                 return;
             }
 
             filteredOrders.forEach(item => {
-                // Tarjeta Móvil
+                const isClosed = String(item.status).trim().toLowerCase() === "closed";
+                const badgeClass = isClosed ? "badge-status badge-closed-status" : "badge-status";
+
                 const card = document.createElement('div');
                 card.className = 'order-card-mobile';
                 card.onclick = () => openDetailModal(item.id);
                 
-                let actionBtnMobile = `<span style="font-size:0.75rem; color:var(--accent);"><i class="fas fa-chevron-right"></i> Open Details / Report</span>`;
-                if (currentUser.rol.toLowerCase() === 'boss' || currentUser.rol.toLowerCase() === 'dispatch') {
+                let actionBtnMobile = `<span style="font-size:0.75rem; color:var(--accent);"><i class="fas fa-chevron-right"></i> Details</span>`;
+                if (!isClosed && isManagement) {
                     actionBtnMobile = `<button class="btn-action-sm" onclick="openAssignModal(event, '${item.id}')"><i class="fas fa-user-tag"></i> Assign</button>`;
                 }
 
                 card.innerHTML = `
                     <div class="card-top">
                         <span class="card-id">${item.id}</span>
-                        <span class="badge-status">${item.status}</span>
+                        <span class="${badgeClass}">${item.status}</span>
                     </div>
                     <div class="card-body">
                         <p><i class="fas fa-user"></i> <strong>${item.customer}</strong></p>
@@ -636,18 +1237,17 @@
                 `;
                 mobileList.appendChild(card);
 
-                // Fila Escritorio
                 const tr = document.createElement('tr');
                 tr.onclick = (e) => { if(e.target.tagName !== 'BUTTON') openDetailModal(item.id); };
                 
                 let actionBtn = `<button class="btn-action-sm" onclick="openDetailModal('${item.id}')">Details</button>`;
-                if (currentUser.rol.toLowerCase() === 'boss' || currentUser.rol.toLowerCase() === 'dispatch') {
+                if (!isClosed && isManagement) {
                     actionBtn = `<button class="btn-action-sm" onclick="openAssignModal(event, '${item.id}')">Assign</button>`;
                 }
 
                 tr.innerHTML = `
                     <td style="font-family:'Orbitron'; font-weight:bold; color:var(--primary-glow);">${item.id}</td>
-                    <td><span class="badge-status">${item.status}</span></td>
+                    <td><span class="${badgeClass}">${item.status}</span></td>
                     <td><strong>${item.customer}</strong><br><small style="color:#64748b;">${item.address}</small></td>
                     <td>${item.phone}</td>
                     <td>${item.service}</td>
@@ -661,7 +1261,7 @@
 
         function filterOrders() {
             const q = document.getElementById('searchInput').value.toLowerCase();
-            document.querySelectorAll('.order-card-mobile').forEach(c => {
+            document.querySelectorAll('#ordersMobileList .order-card-mobile').forEach(c => {
                 c.style.display = c.innerText.toLowerCase().includes(q) ? '' : 'none';
             });
             const rows = document.getElementById('ordersTableBody').getElementsByTagName('tr');
@@ -670,24 +1270,33 @@
             }
         }
 
-        // MODAL DE DETALLES Y REPORTE DEL TÉCNICO
         function openDetailModal(id) {
             selectedOrderId = id;
             const order = activeOrdersData.find(o => o.id === id);
             if (!order) return;
 
             const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(order.address)}`;
+            const isClosed = String(order.status).trim().toLowerCase() === "closed";
             
             let techReportSection = '';
-            if (currentUser.rol.toLowerCase() === 'tech') {
+            
+            if (currentUser.rol.toLowerCase() === 'tech' && !isClosed) {
                 techReportSection = `
                     <hr style="border-color:var(--border); margin: 20px 0;">
                     <h4 style="font-family:'Orbitron'; font-size:0.9rem; color:var(--success); margin-bottom:10px;"><i class="fas fa-clipboard-check"></i> TECH REPAIR REPORT</h4>
                     <div class="input-group">
                         <label>REPAIR NOTES / EXTRA WORK DONE</label>
-                        <textarea id="techNotesInput" placeholder="Describe parts replaced, service performed, or additional labor..." style="height:100px; resize:none; padding-left:14px;"></textarea>
+                        <textarea id="techNotesInput" placeholder="Describe parts replaced, service performed, or additional labor..." style="height:100px; resize:none;"></textarea>
                     </div>
                     <button class="btn-glow btn-success" onclick="submitTechReport()">COMPLETE & CLOSE ORDER</button>
+                `;
+            } else if (isClosed) {
+                techReportSection = `
+                    <hr style="border-color:var(--border); margin: 20px 0;">
+                    <h4 style="font-family:'Orbitron'; font-size:0.9rem; color:var(--success); margin-bottom:10px;"><i class="fas fa-check-circle"></i> COMPLETED WORK SUMMARY</h4>
+                    <p style="margin-bottom:6px;"><strong>Completed On:</strong> ${order.dateFinish || 'N/A'}</p>
+                    <p><strong>Technician Repair Report:</strong></p>
+                    <p style="background:rgba(16, 185, 129, 0.08); padding:12px; border-radius:8px; border:1px solid rgba(16, 185, 129, 0.3); color:#a7f3d0; margin-top:4px;">${order.techNotes || 'No tech repair report logged.'}</p>
                 `;
             }
 
@@ -710,7 +1319,6 @@
             document.getElementById('detailModal').style.display = 'flex';
         }
 
-        // ENVIAR REPORTE DEL TÉCNICO A GOOGLE SHEETS
         function submitTechReport() {
             const notes = document.getElementById('techNotesInput').value.trim();
             if(!notes) {
@@ -751,8 +1359,9 @@
             document.getElementById('mOrderTitle').innerText = `ASSIGN TECHNICIAN [${id}]`;
             document.getElementById('modalBodyContent').innerHTML = `
                 <p style="margin-bottom: 15px; color: #94a3b8;">Client: <strong>${order.customer}</strong> | Service: ${order.service}</p>
-                <div class="input-group">
+                <div class="input-group with-icon">
                     <label>SELECT ACTIVE TECHNICIAN</label>
+                    <i class="fas fa-user-cog"></i>
                     <select id="techSelect">
                         ${optionsHtml}
                     </select>
