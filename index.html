@@ -151,11 +151,11 @@
 
         .input-group label {
             display: block;
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             font-family: 'Orbitron';
             color: #94a3b8;
             margin-bottom: 5px;
-            letter-spacing: 1px;
+            letter-spacing: 0.8px;
         }
 
         .input-group i {
@@ -170,7 +170,7 @@
             width: 100%;
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.12);
-            padding: 12px;
+            padding: 11px 12px;
             border-radius: 12px;
             color: white;
             font-family: 'Rajdhani', sans-serif;
@@ -267,28 +267,30 @@
         /* --- SUB-PESTAÑAS --- */
         .tab-navigation {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             margin-bottom: 15px;
             border-bottom: 1px solid var(--border);
             padding-bottom: 10px;
+            flex-wrap: wrap;
         }
 
         .tab-btn {
             flex: 1;
-            padding: 10px 12px;
+            min-width: 105px;
+            padding: 10px 8px;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border);
             border-radius: 10px;
             color: #94a3b8;
             font-family: 'Orbitron';
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: bold;
             cursor: pointer;
             text-align: center;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 5px;
         }
 
         .tab-btn.active {
@@ -309,9 +311,15 @@
             color: #fff;
         }
 
+        .tab-btn.tab-due.active {
+            background: rgba(239, 68, 68, 0.22);
+            border-color: var(--danger);
+            color: #fff;
+        }
+
         .metrics-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
             gap: 12px;
             margin-bottom: 18px;
         }
@@ -337,6 +345,7 @@
 
         .metric-card.closed-card::before { background: var(--success); }
         .metric-card.fuel-card::before { background: var(--fuel); }
+        .metric-card.due-card::before { background: var(--danger); }
 
         .metric-icon {
             width: 40px;
@@ -352,9 +361,10 @@
 
         .metric-card.closed-card .metric-icon { color: var(--success); }
         .metric-card.fuel-card .metric-icon { color: var(--fuel); }
+        .metric-card.due-card .metric-icon { color: var(--danger); }
 
         .metric-data h3 { font-family: 'Orbitron'; font-size: 1.3rem; font-weight: 800; }
-        .metric-data p { font-size: 0.7rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.8px; }
+        .metric-data p { font-size: 0.68rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.8px; }
 
         .dash-actions {
             display: flex;
@@ -389,7 +399,11 @@
 
         .order-card-mobile.fuel-active-border {
             border-color: rgba(249, 115, 22, 0.55);
-            box-shadow: 0 8px 20px rgba(249, 115, 22, 0.15);
+        }
+
+        .order-card-mobile.due-overdue-border {
+            border-color: rgba(239, 68, 68, 0.75);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.2);
         }
 
         .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 6px; flex-wrap: wrap; }
@@ -422,6 +436,12 @@
             background: rgba(148, 163, 184, 0.1);
             color: #94a3b8;
             border-color: rgba(148, 163, 184, 0.3);
+        }
+
+        .badge-status.badge-overdue {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            border-color: rgba(239, 68, 68, 0.6);
         }
 
         .card-body p {
@@ -536,6 +556,25 @@
             border-radius: 8px;
             margin-bottom: 8px;
             font-size: 0.85rem;
+        }
+
+        .calc-pill-row {
+            display: flex;
+            gap: 6px;
+            margin-top: 6px;
+        }
+
+        .calc-pill {
+            flex: 1;
+            padding: 5px 8px;
+            background: rgba(6, 182, 212, 0.12);
+            border: 1px solid rgba(6, 182, 212, 0.35);
+            color: var(--accent);
+            border-radius: 8px;
+            font-size: 0.72rem;
+            font-family: 'Orbitron';
+            cursor: pointer;
+            text-align: center;
         }
     </style>
 </head>
@@ -660,10 +699,13 @@
         <div id="generatorsSection" style="display: none;">
             <div class="tab-navigation">
                 <button class="tab-btn tab-fuel active" id="tabGenAllBtn" onclick="switchGenFilter('all')">
-                    <i class="fas fa-bolt"></i> IN RENT / ACTIVE (<span id="countGenActiveTab">0</span>)
+                    <i class="fas fa-bolt"></i> IN RENT (<span id="countGenActiveTab">0</span>)
                 </button>
                 <button class="tab-btn tab-fuel" id="tabGenFuelBtn" onclick="switchGenFilter('fuel')">
-                    <i class="fas fa-gas-pump"></i> FUEL ROUTE ON (<span id="countGenFuelTab">0</span>)
+                    <i class="fas fa-gas-pump"></i> FUEL ROUTE (<span id="countGenFuelTab">0</span>)
+                </button>
+                <button class="tab-btn tab-due" id="tabGenDueBtn" onclick="switchGenFilter('due')">
+                    <i class="fas fa-calendar-exclamation"></i> DUE SOON (<span id="countGenDueTab">0</span>)
                 </button>
             </div>
 
@@ -672,21 +714,28 @@
                     <div class="metric-icon"><i class="fas fa-bolt"></i></div>
                     <div class="metric-data">
                         <h3 id="countGenActive">0</h3>
-                        <p>Active Generators (Rent)</p>
+                        <p>Active (In Rent)</p>
                     </div>
                 </div>
                 <div class="metric-card fuel-card">
                     <div class="metric-icon"><i class="fas fa-gas-pump"></i></div>
                     <div class="metric-data">
                         <h3 id="countGenFuel">0</h3>
-                        <p>On Fuel Route</p>
+                        <p>Fuel Route ON</p>
+                    </div>
+                </div>
+                <div class="metric-card due-card">
+                    <div class="metric-icon"><i class="fas fa-clock"></i></div>
+                    <div class="metric-data">
+                        <h3 id="countGenDue">0</h3>
+                        <p>Upcoming / Due PM</p>
                     </div>
                 </div>
             </div>
 
             <div class="dash-actions">
                 <div class="dash-title">
-                    <i class="fas fa-oil-can" style="color: var(--fuel);"></i> <span>GENERATOR FLEET & PM SERVICES</span>
+                    <i class="fas fa-oil-can" style="color: var(--fuel);"></i> <span id="genSectionTitle">GENERATOR FLEET & PM SERVICES</span>
                 </div>
                 <div style="display: flex; gap: 8px; width: 100%;">
                     <div class="search-box">
@@ -704,11 +753,11 @@
                     <thead>
                         <tr>
                             <th>GenNum</th>
-                            <th>KWGen</th>
-                            <th>UnitNum</th>
+                            <th>KWGen / Unit</th>
                             <th>Yard</th>
                             <th>FuelRute</th>
-                            <th>Status</th>
+                            <th>Next PM Hrs</th>
+                            <th>Next PM Date</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -731,7 +780,7 @@
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbytH509dJAefYY7Ng6mowbGHMXxf2qfxLy_sEv1GzETiML5z5aOBWmJgsryJ_Yzn8Es/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxUGG37QAodzZ_8NXX47SIEwBDeNbcZOPD8VswreoX5x1VNcApcf0Vbh_6DuqblCFg6/exec';
 
         let currentUser = null;
         let activeOrdersData = [];
@@ -742,7 +791,7 @@
         let selectedOrderId = null;
         let currentTab = 'open';
         let currentModule = 'workorders';
-        let currentGenFilter = 'all'; // 'all' o 'fuel'
+        let currentGenFilter = 'all'; // 'all', 'fuel', 'due'
 
         document.addEventListener('DOMContentLoaded', () => {
             const savedUser = localStorage.getItem('deepwell_session');
@@ -803,11 +852,9 @@
                 document.getElementById('tabNav').style.display = 'flex';
                 switchModule('workorders');
             } else if (role === 'lubtech') {
-                // LubTech va directo al módulo de Generadores & Fuel Route
                 document.getElementById('moduleSwitcher').style.display = 'none';
                 switchModule('generators');
             } else {
-                // Tech normal va a sus Work Orders asignadas
                 document.getElementById('moduleSwitcher').style.display = 'none';
                 document.getElementById('tabNav').style.display = 'none';
                 document.getElementById('tableHeaderTitle').innerText = "MY ASSIGNED ORDERS";
@@ -861,6 +908,16 @@
             currentGenFilter = filter;
             document.getElementById('tabGenAllBtn').classList.toggle('active', filter === 'all');
             document.getElementById('tabGenFuelBtn').classList.toggle('active', filter === 'fuel');
+            document.getElementById('tabGenDueBtn').classList.toggle('active', filter === 'due');
+
+            if (filter === 'due') {
+                document.getElementById('genSectionTitle').innerText = "UPCOMING & OVERDUE PM SERVICES";
+            } else if (filter === 'fuel') {
+                document.getElementById('genSectionTitle').innerText = "ACTIVE FUEL ROUTE UNITS";
+            } else {
+                document.getElementById('genSectionTitle').innerText = "GENERATOR FLEET & PM SERVICES";
+            }
+
             renderGenerators();
         }
 
@@ -873,7 +930,6 @@
         }
 
         function loadDashboardData() {
-            // 1. Cargar WorkOrders
             fetch(`${SCRIPT_URL}?action=getOrders`)
                 .then(res => res.json())
                 .then(data => {
@@ -883,7 +939,6 @@
                     }
                 });
 
-            // 2. Cargar Users
             fetch(`${SCRIPT_URL}?action=getUsers`)
                 .then(res => res.json())
                 .then(data => {
@@ -892,40 +947,73 @@
                     }
                 });
 
-            // 3. Cargar Generadores
-            fetch(`${SCRIPT_URL}?action=getGenerators`)
-                .then(res => res.json())
-                .then(data => {
-                    if (Array.isArray(data)) {
-                        generatorsData = data;
-                        if (currentModule === 'generators') renderGenerators();
-                    }
-                });
+            Promise.all([
+                fetch(`${SCRIPT_URL}?action=getGenerators`).then(r => r.json()),
+                fetch(`${SCRIPT_URL}?action=getGenServices`).then(r => r.json())
+            ]).then(([gens, srvs]) => {
+                if (Array.isArray(gens)) generatorsData = gens;
+                if (Array.isArray(srvs)) genServicesData = srvs;
+                if (currentModule === 'generators') renderGenerators();
+            });
+        }
 
-            // 4. Cargar Historial de Servicios de Generadores
-            fetch(`${SCRIPT_URL}?action=getGenServices`)
-                .then(res => res.json())
-                .then(data => {
-                    if (Array.isArray(data)) {
-                        genServicesData = data;
-                    }
-                });
+        // Obtener el último registro de servicio de un generador
+        function getLastServiceForGen(genNum) {
+            const logs = genServicesData.filter(s => s.genNum === genNum);
+            return logs.length > 0 ? logs[logs.length - 1] : null;
+        }
+
+        // Calcular días restantes hasta DateNextService
+        function getDaysUntilDue(dateNextStr) {
+            if (!dateNextStr) return null;
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const parts = dateNextStr.split('-');
+            if (parts.length !== 3) return null;
+            const due = new Date(parts[0], parts[1] - 1, parts[2]);
+            const diffMs = due - today;
+            return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
         }
 
         // ==========================================
-        // RENDERIZAR GENERADORES & FUEL ROUTE
+        // RENDERIZAR GENERADORES & DUE SOON LIST
         // ==========================================
         function renderGenerators() {
-            // Filtrar solo los generadores con Active = On (en renta)
             let activeGens = generatorsData.filter(g => String(g.active).trim().toLowerCase() === 'on');
             let fuelGens = activeGens.filter(g => String(g.fuelRute).trim().toLowerCase() === 'on');
 
+            // Enriquecer cada generador con su último servicio y fecha próxima
+            let enrichedGens = activeGens.map(gen => {
+                const lastSrv = getLastServiceForGen(gen.genNum);
+                const nextHrs = lastSrv ? lastSrv.hrsNextService : "";
+                const nextDate = lastSrv ? lastSrv.dateNextService : "";
+                const daysLeft = getDaysUntilDue(nextDate);
+                return { ...gen, lastSrv, nextHrs, nextDate, daysLeft };
+            });
+
+            // Generadores próximos a servicio (tienen fecha programada o ya pasaron/están dentro de 14 días, o todos ordenados por urgencia)
+            let dueSoonGens = enrichedGens
+                .filter(g => g.nextDate !== "" || g.nextHrs !== "")
+                .sort((a, b) => {
+                    if (a.daysLeft === null) return 1;
+                    if (b.daysLeft === null) return -1;
+                    return a.daysLeft - b.daysLeft;
+                });
+
             document.getElementById('countGenActive').innerText = activeGens.length;
             document.getElementById('countGenFuel').innerText = fuelGens.length;
+            document.getElementById('countGenDue').innerText = dueSoonGens.length;
+
             document.getElementById('countGenActiveTab').innerText = activeGens.length;
             document.getElementById('countGenFuelTab').innerText = fuelGens.length;
+            document.getElementById('countGenDueTab').innerText = dueSoonGens.length;
 
-            let listToRender = currentGenFilter === 'fuel' ? fuelGens : activeGens;
+            let listToRender = enrichedGens;
+            if (currentGenFilter === 'fuel') {
+                listToRender = enrichedGens.filter(g => String(g.fuelRute).trim().toLowerCase() === 'on');
+            } else if (currentGenFilter === 'due') {
+                listToRender = dueSoonGens;
+            }
 
             const mobileList = document.getElementById('generatorsMobileList');
             const desktopTable = document.getElementById('generatorsTableBody');
@@ -933,7 +1021,9 @@
             desktopTable.innerHTML = '';
 
             if (listToRender.length === 0) {
-                const msg = currentGenFilter === 'fuel' ? 'No generators currently flagged on Fuel Route.' : 'No active generators in rent.';
+                const msg = currentGenFilter === 'due' 
+                    ? 'No upcoming services scheduled yet. Log a PM service to calculate next due dates.' 
+                    : (currentGenFilter === 'fuel' ? 'No generators currently flagged on Fuel Route.' : 'No active generators in rent.');
                 mobileList.innerHTML = `<div style="text-align:center; padding:30px; color:#64748b;">${msg}</div>`;
                 desktopTable.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#64748b;">${msg}</td></tr>`;
                 return;
@@ -942,26 +1032,44 @@
             listToRender.forEach(gen => {
                 const isFuelOn = String(gen.fuelRute).trim().toLowerCase() === 'on';
                 const fuelBadgeClass = isFuelOn ? 'badge-status badge-fuel-on' : 'badge-status badge-fuel-off';
-                const fuelText = isFuelOn ? 'FUEL ROUTE: ON' : 'FUEL ROUTE: OFF';
-                const cardBorderClass = isFuelOn ? 'order-card-mobile fuel-active-border' : 'order-card-mobile';
+                const fuelText = isFuelOn ? 'FUEL: ON' : 'FUEL: OFF';
+
+                // Indicador de urgencia de servicio
+                let dueBadgeHtml = '';
+                let cardExtraBorder = isFuelOn ? 'fuel-active-border' : '';
+
+                if (gen.daysLeft !== null) {
+                    if (gen.daysLeft < 0) {
+                        dueBadgeHtml = `<span class="badge-status badge-overdue">OVERDUE (${Math.abs(gen.daysLeft)}d)</span>`;
+                        cardExtraBorder = 'due-overdue-border';
+                    } else if (gen.daysLeft <= 4) {
+                        dueBadgeHtml = `<span class="badge-status">DUE IN ${gen.daysLeft}d</span>`;
+                    } else {
+                        dueBadgeHtml = `<span class="badge-status badge-closed-status">IN ${gen.daysLeft}d</span>`;
+                    }
+                }
 
                 // 1. Tarjeta Móvil
                 const card = document.createElement('div');
-                card.className = cardBorderClass;
+                card.className = `order-card-mobile ${cardExtraBorder}`;
                 card.onclick = () => openGenServiceModal(gen.genNum);
 
                 card.innerHTML = `
                     <div class="card-top">
-                        <span class="card-id" style="color:var(--accent);">${gen.genNum} <small style="color:#94a3b8; font-size:0.75rem;">(Unit #${gen.unitNum})</small></span>
-                        <span class="${fuelBadgeClass}"><i class="fas fa-gas-pump"></i> ${fuelText}</span>
+                        <span class="card-id" style="color:var(--accent);">${gen.genNum} <small style="color:#94a3b8; font-size:0.75rem;">(#${gen.unitNum})</small></span>
+                        <div style="display:flex; gap:5px; align-items:center;">
+                            ${dueBadgeHtml}
+                            <span class="${fuelBadgeClass}"><i class="fas fa-gas-pump"></i> ${fuelText}</span>
+                        </div>
                     </div>
                     <div class="card-body">
-                        <p><i class="fas fa-bolt" style="color:var(--gold);"></i> <strong>${gen.kwGen} KW</strong> Generator</p>
-                        <p><i class="fas fa-map-pin" style="color:var(--danger);"></i> Yard / Location: <strong>${gen.yard}</strong></p>
+                        <p><i class="fas fa-bolt" style="color:var(--gold);"></i> <strong>${gen.kwGen} KW</strong> • Yard: <strong>${gen.yard}</strong></p>
+                        <p><i class="fas fa-calendar-check" style="color:var(--accent);"></i> Next PM: <strong>${gen.nextHrs ? gen.nextHrs + ' Hrs' : 'Not logged'}</strong> ${gen.nextDate ? '(' + gen.nextDate + ')' : ''}</p>
+                        ${gen.lastSrv ? `<p style="font-size:0.82rem; color:#94a3b8;"><i class="fas fa-user-cog"></i> Last by ${gen.lastSrv.tech || 'Tech'} • ${gen.lastSrv.customer}</p>` : ''}
                     </div>
                     <div class="card-footer">
                         <button class="btn-action-sm" onclick="toggleFuelQuick(event, '${gen.genNum}', '${isFuelOn ? 'Off' : 'On'}')">
-                            <i class="fas fa-gas-pump"></i> Set Fuel ${isFuelOn ? 'OFF' : 'ON'}
+                            <i class="fas fa-gas-pump"></i> Fuel ${isFuelOn ? 'OFF' : 'ON'}
                         </button>
                         <button class="btn-action-sm btn-action-fuel">
                             <i class="fas fa-oil-can"></i> Log Service
@@ -976,11 +1084,11 @@
 
                 tr.innerHTML = `
                     <td style="font-family:'Orbitron'; font-weight:bold; color:var(--accent);">${gen.genNum}</td>
-                    <td><strong>${gen.kwGen} KW</strong></td>
-                    <td>#${gen.unitNum}</td>
+                    <td><strong>${gen.kwGen} KW</strong> (Unit #${gen.unitNum})</td>
                     <td><i class="fas fa-map-pin" style="color:var(--danger);"></i> ${gen.yard}</td>
                     <td><span class="${fuelBadgeClass}">${fuelText}</span></td>
-                    <td><span class="badge-status badge-closed-status">ACTIVE (IN RENT)</span></td>
+                    <td><strong>${gen.nextHrs ? gen.nextHrs + ' Hrs' : '-'}</strong></td>
+                    <td>${gen.nextDate || '-'} ${dueBadgeHtml}</td>
                     <td style="display:flex; gap:6px;">
                         <button class="btn-action-sm" onclick="toggleFuelQuick(event, '${gen.genNum}', '${isFuelOn ? 'Off' : 'On'}')">Fuel ${isFuelOn ? 'OFF' : 'ON'}</button>
                         <button class="btn-action-sm btn-action-fuel" onclick="openGenServiceModal('${gen.genNum}')"><i class="fas fa-oil-can"></i> Service</button>
@@ -1013,33 +1121,71 @@
                 fuelRute: newState
             });
 
-            fetch(`${SCRIPT_URL}?${params.toString()}`, { method: "GET", mode: "no-cors" })
-                .then(() => console.log(`FuelRute updated for ${genNum} -> ${newState}`));
+            fetch(`${SCRIPT_URL}?${params.toString()}`, { method: "GET", mode: "no-cors" });
         }
 
-        // MODAL PARA QUE LUBTECH LLENE EL SERVICIO DEL GENERADOR
+        // ==========================================
+        // MODAL DE SERVICIO DE GENERADOR (Con bloqueo de fechas para LubTech)
+        // ==========================================
         function openGenServiceModal(genNum) {
             const gen = generatorsData.find(g => g.genNum === genNum);
             if (!gen) return;
 
-            // Buscar historial previo de este generador
+            const role = currentUser.rol.toLowerCase();
+            const isDispatchOrBoss = role === 'dispatch' || role === 'boss';
+
             const history = genServicesData.filter(s => s.genNum === genNum).reverse();
-            let lastHrs = history.length > 0 ? history[0].hrs : "";
-            let lastCustomer = history.length > 0 ? history[0].customer : "";
-            let lastLease = history.length > 0 ? history[0].lease : "";
+            const lastRecord = history.length > 0 ? history[0] : null;
+
+            let lastHrs = lastRecord ? lastRecord.hrs : "";
+            let lastCustomer = lastRecord ? lastRecord.customer : "";
+            let lastLease = lastRecord ? lastRecord.lease : "";
+            let currentStartRent = lastRecord ? lastRecord.starRent : "";
+            let currentStopRent = lastRecord ? lastRecord.stopRent : "";
+
+            // Fecha estimada por defecto (+12 días por 300 hrs a 24h/día)
+            const defaultNextDate = addDaysToToday(12);
 
             let historyHtml = '';
             if (history.length > 0) {
-                historyHtml = `<div style="margin-top:15px;"><p style="font-family:'Orbitron'; font-size:0.75rem; color:#94a3b8; margin-bottom:8px;">RECENT SERVICE LOGS:</p>`;
+                historyHtml = `<div style="margin-top:16px;"><p style="font-family:'Orbitron'; font-size:0.75rem; color:#94a3b8; margin-bottom:8px;">RECENT SERVICE LOGS:</p>`;
                 history.slice(0, 3).forEach(h => {
                     historyHtml += `
                         <div class="service-history-item">
                             <strong>${h.idService}</strong> • ${h.typeService} (${h.hrs} Hrs)<br>
-                            <small style="color:#94a3b8;">Customer: ${h.customer || 'N/A'} | Lease: ${h.lease || 'N/A'} | Next Due: ${h.hrsNextService} Hrs</small>
+                            <small style="color:#94a3b8;">Tech: <strong>${h.tech || 'N/A'}</strong> | Customer: ${h.customer || 'N/A'} (${h.lease || 'N/A'})</small><br>
+                            <small style="color:var(--accent);">Next PM: ${h.hrsNextService} Hrs ${h.dateNextService ? '• Est. Date: ' + h.dateNextService : ''}</small>
                         </div>
                     `;
                 });
                 historyHtml += `</div>`;
+            }
+
+            // Campos StartRent y StopRent: SOLO EDITABLES PARA DISPATCH / BOSS
+            let rentDatesHtml = '';
+            if (isDispatchOrBoss) {
+                rentDatesHtml = `
+                    <div class="two-col-grid">
+                        <div class="input-group">
+                            <label>START RENT (Dispatch Only)</label>
+                            <input type="date" id="srvStartRent" value="${currentStartRent}">
+                        </div>
+                        <div class="input-group">
+                            <label>STOP RENT (Dispatch Only)</label>
+                            <input type="date" id="srvStopRent" value="${currentStopRent}">
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Para LubTech van ocultos y protegidos conservando los valores existentes de Dispatch
+                rentDatesHtml = `
+                    <input type="hidden" id="srvStartRent" value="${currentStartRent}">
+                    <input type="hidden" id="srvStopRent" value="${currentStopRent}">
+                    <div style="background:rgba(245, 158, 11, 0.08); border:1px solid rgba(245, 158, 11, 0.25); padding:8px 12px; border-radius:10px; margin-bottom:14px; font-size:0.8rem; color:#fcd34d;">
+                        <i class="fas fa-lock"></i> Rent Dates (Start/Stop) are managed by Dispatch only.
+                        ${currentStartRent ? `<br><small style="color:#cbd5e1;">Active Rent Start: <strong>${currentStartRent}</strong></small>` : ''}
+                    </div>
+                `;
             }
 
             document.getElementById('mOrderTitle').innerText = `GENERATOR SERVICE [${gen.genNum}]`;
@@ -1057,19 +1203,29 @@
                 <div class="two-col-grid">
                     <div class="input-group">
                         <label>CURRENT ENGINE HRS *</label>
-                        <input type="number" id="srvHrs" placeholder="e.g. 1250" oninput="autoCalcNextHrs()" required>
+                        <input type="number" step="0.1" id="srvHrs" placeholder="e.g. 32400.3" oninput="autoCalcNext300()" required>
                     </div>
                     <div class="input-group">
-                        <label>NEXT SERVICE HRS *</label>
-                        <input type="number" id="srvNextHrs" placeholder="e.g. 1500" required>
+                        <label>NEXT SERVICE (+300 HRS) *</label>
+                        <input type="number" step="0.1" id="srvNextHrs" placeholder="Auto +300" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>ESTIMATED NEXT SERVICE DATE *</label>
+                    <input type="date" id="srvNextDate" value="${defaultNextDate}" required>
+                    <div class="calc-pill-row">
+                        <button type="button" class="calc-pill" onclick="setNextDateByRunRate(24)">24h/day (+12d)</button>
+                        <button type="button" class="calc-pill" onclick="setNextDateByRunRate(12)">12h/day (+25d)</button>
+                        <button type="button" class="calc-pill" onclick="setNextDateByRunRate(8)">8h/day (+37d)</button>
                     </div>
                 </div>
 
                 <div class="input-group">
                     <label>TYPE OF SERVICE *</label>
                     <select id="srvType">
-                        <option value="PM Service (250 Hrs)">PM Service (250 Hrs - Oil & Filters)</option>
-                        <option value="PM Major Service (500 Hrs)">PM Major Service (500 Hrs)</option>
+                        <option value="PM Service (300 Hrs)">PM Service (300 Hrs - Oil & Filters)</option>
+                        <option value="PM Major Service (600 Hrs)">PM Major Service (600 Hrs)</option>
                         <option value="Fueling / Diesel Refill">Fueling / Diesel Refill</option>
                         <option value="Routine Inspection & Fluids">Routine Inspection & Fluids</option>
                         <option value="Corrective / Field Repair">Corrective / Field Repair</option>
@@ -1083,20 +1239,11 @@
                     </div>
                     <div class="input-group">
                         <label>LEASE / WELL SITE *</label>
-                        <input type="text" id="srvLease" value="${lastLease}" placeholder="e.g. Permian Pad 4" required>
+                        <input type="text" id="srvLease" value="${lastLease}" placeholder="e.g. All Lea" required>
                     </div>
                 </div>
 
-                <div class="two-col-grid">
-                    <div class="input-group">
-                        <label>START RENT (Optional)</label>
-                        <input type="date" id="srvStartRent">
-                    </div>
-                    <div class="input-group">
-                        <label>STOP RENT (Optional)</label>
-                        <input type="date" id="srvStopRent">
-                    </div>
-                </div>
+                ${rentDatesHtml}
 
                 <div class="input-group">
                     <label>UPDATE FUEL ROUTE STATUS</label>
@@ -1107,7 +1254,7 @@
                 </div>
 
                 <button class="btn-glow btn-fuel" onclick="submitGeneratorService('${gen.genNum}')">
-                    <i class="fas fa-save"></i> SAVE SERVICE RECORD
+                    <i class="fas fa-save"></i> SAVE SERVICE (${currentUser.name})
                 </button>
 
                 ${historyHtml}
@@ -1115,17 +1262,33 @@
             document.getElementById('detailModal').style.display = 'flex';
         }
 
-        // Calcula automáticamente +250 horas para el próximo mantenimiento
-        function autoCalcNextHrs() {
+        function addDaysToToday(days) {
+            const d = new Date();
+            d.setDate(d.getDate() + days);
+            const y = d.getFullYear();
+            const m = ("0" + (d.getMonth() + 1)).slice(-2);
+            const day = ("0" + d.getDate()).slice(-2);
+            return `${y}-${m}-${day}`;
+        }
+
+        // Calcula automáticamente +300 horas y +12 días (300h / 24h por día)
+        function autoCalcNext300() {
             const hrs = parseFloat(document.getElementById('srvHrs').value);
             if (!isNaN(hrs)) {
-                document.getElementById('srvNextHrs').value = hrs + 250;
+                document.getElementById('srvNextHrs').value = (hrs + 300).toFixed(1).replace(/\.0$/, '');
             }
+        }
+
+        // Recalcula DateNextService según las horas diarias de operación de la unidad
+        function setNextDateByRunRate(hoursPerDay) {
+            const days = Math.floor(300 / hoursPerDay);
+            document.getElementById('srvNextDate').value = addDaysToToday(days);
         }
 
         function submitGeneratorService(genNum) {
             const hrs = document.getElementById('srvHrs').value.trim();
             const hrsNextService = document.getElementById('srvNextHrs').value.trim();
+            const dateNextService = document.getElementById('srvNextDate').value;
             const typeService = document.getElementById('srvType').value;
             const customer = document.getElementById('srvCustomer').value.trim();
             const lease = document.getElementById('srvLease').value.trim();
@@ -1133,8 +1296,8 @@
             const stopRent = document.getElementById('srvStopRent').value;
             const fuelRute = document.getElementById('srvFuelStatus').value;
 
-            if (!hrs || !customer || !lease) {
-                alert("Please fill in Current Hours, Customer, and Lease.");
+            if (!hrs || !customer || !lease || !dateNextService) {
+                alert("Please fill in Current Hours, Next Service Date, Customer, and Lease.");
                 return;
             }
 
@@ -1142,12 +1305,14 @@
                 action: "addGenService",
                 genNum: genNum,
                 hrs: hrs,
-                typeService: `${typeService} (By: ${currentUser.name})`,
+                typeService: typeService,
                 customer: customer,
                 lease: lease,
                 starRent: starRent,
                 stopRent: stopRent,
                 hrsNextService: hrsNextService,
+                tech: currentUser.name,
+                dateNextService: dateNextService,
                 fuelRute: fuelRute
             });
 
@@ -1156,7 +1321,7 @@
                 mode: "no-cors"
             })
             .then(() => {
-                alert(`Service logged for ${genNum}! Next service due at ${hrsNextService} Hrs.`);
+                alert(`Service logged for ${genNum}!\nNext PM: ${hrsNextService} Hrs (${dateNextService})`);
                 closeModal();
                 loadDashboardData();
             })
